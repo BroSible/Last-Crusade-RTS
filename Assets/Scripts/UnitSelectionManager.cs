@@ -66,7 +66,7 @@ public class UnitSelectionManager : MonoBehaviour
 
 
         // Marker
-        if(Input.GetMouseButtonDown(1))
+        if(Input.GetMouseButtonDown(1) && unitsSelected.Count > 0)
         {
             RaycastHit hit;
             Ray ray = camera.ScreenPointToRay(Input.mousePosition);
@@ -87,12 +87,14 @@ public class UnitSelectionManager : MonoBehaviour
         {
             unitsSelected.Add(unit);
             EnableUnitMovement(unit,true);
+            TriggerSelectionIndicator(unit, true);
         }
 
         else
         {
             EnableUnitMovement(unit,false);
             unitsSelected.Remove(unit);
+            TriggerSelectionIndicator(unit, false);
         }
     }
 
@@ -101,7 +103,7 @@ public class UnitSelectionManager : MonoBehaviour
         DeselectAll();
 
         unitsSelected.Add(unit);
-
+        TriggerSelectionIndicator(unit, true);
         EnableUnitMovement(unit, true);
     }
 
@@ -110,14 +112,20 @@ public class UnitSelectionManager : MonoBehaviour
         foreach (var unit in unitsSelected)
         {
             EnableUnitMovement(unit, false);
+            TriggerSelectionIndicator(unit, false);
         }
-
+        groundMarker.SetActive(false);
         unitsSelected.Clear();
     }
 
     private void EnableUnitMovement(GameObject unit, bool shouldMove)
     {
         unit.GetComponent<UnitMovement>().enabled = shouldMove;
+    }
+
+    private void TriggerSelectionIndicator(GameObject unit, bool isVisible)
+    {
+        unit.transform.GetChild(0).gameObject.SetActive(isVisible);
     }
 
 }
