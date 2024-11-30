@@ -7,8 +7,6 @@ public class Unit : MonoBehaviour
     void Start()
     {
         UnitSelectionManager.Instance.allUnitsList.Add(gameObject);
-
-        
     }
 
     void OnDestroy()
