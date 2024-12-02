@@ -44,17 +44,20 @@ public class UnitSelectionManager : MonoBehaviour
 
             if(Physics.Raycast(ray, out hit, Mathf.Infinity, clickable))
             {
+                // multi select unit by left shift
                 if(Input.GetKey(KeyCode.LeftShift))
                 {
                     MuiltiSelect(hit.collider.gameObject);
                 }
 
+                // just select unit by one click
                 else
                 {
                     SelectByClicking(hit.collider.gameObject);
                 }
             }
-
+            
+            // deselect unit, if you don't press left shift and don't click on unit
             else
             {
                 if(Input.GetKey(KeyCode.LeftShift) == false)
