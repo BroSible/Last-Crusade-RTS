@@ -6,8 +6,6 @@ public class CameraController : MonoBehaviour
 {
     public float panSpeed = 20f; // Скорость перемещения камеры
     public float panBorderThickness = 10f; // Толщина зоны у края экрана для перемещения
-    public Vector2 panLimit = new Vector2(50f, 50f); // Ограничения по координатам
-
     public float scrollSpeed = 20f; // Скорость зума
     public float minY = 10f; // Минимальная высота камеры
     public float maxY = 50f; // Максимальная высота камеры
@@ -44,10 +42,6 @@ public class CameraController : MonoBehaviour
         {
             pos -= right * panSpeed * Time.deltaTime;
         }
-
-        // Ограничение позиции камеры
-        pos.x = Mathf.Clamp(pos.x, -panLimit.x, panLimit.x);
-        pos.z = Mathf.Clamp(pos.z, -panLimit.y, panLimit.y);
 
         // Зум камеры
         float scroll = Input.GetAxis("Mouse ScrollWheel");
