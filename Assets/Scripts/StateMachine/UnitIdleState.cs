@@ -18,7 +18,7 @@ public class UnitIdleState : StateMachineBehaviour
         if(attackController.targetToAttack != null)
         {
             //transition to follow state
-            animator.SetBool("isFollowing", true);
+            animator.SetBool("isFollow", true);
         }
     }
 }
