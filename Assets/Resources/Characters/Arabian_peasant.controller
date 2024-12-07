@@ -65,7 +65,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ac213078f552944b9ebcdd5f93e6c32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackingDistance: 1
+  attackingDistance: 1.5
+  rotationSpeed: 5
 --- !u!1102 &-6532791069387811794
 AnimatorState:
   serializedVersion: 6
@@ -78,7 +79,8 @@ AnimatorState:
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 7117513758671497967}
-  m_StateMachineBehaviours: []
+  m_StateMachineBehaviours:
+  - {fileID: 1735299055430824343}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -158,6 +160,21 @@ AnimatorController:
     m_IKPass: 0
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
+--- !u!114 &1735299055430824343
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82b47ae3fd148bc4d8a1f55a9f3a961a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stopAttackingDistance: 2
+  attackRate: 2
+  attackTimer: 0
 --- !u!1101 &2604566015942118652
 AnimatorStateTransition:
   m_ObjectHideFlags: 1

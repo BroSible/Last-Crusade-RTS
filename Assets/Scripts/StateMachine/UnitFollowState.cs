@@ -9,6 +9,7 @@ public class UnitFollowState : StateMachineBehaviour
     AttackController attackController;
     NavMeshAgent agent;
     public float attackingDistance = 1f;
+    public float rotationSpeed = 5.0f;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -33,15 +34,23 @@ public class UnitFollowState : StateMachineBehaviour
             {
                 // Moving unit towards enemy
                 agent.SetDestination(attackController.targetToAttack.position);
-                animator.transform.LookAt(attackController.targetToAttack);
+
+                // Restrict rotation to Y-axis only
+                Vector3 direction = attackController.targetToAttack.position - animator.transform.position;
+                direction.y = 0; // Ignore Y-axis for rotation
+                if (direction != Vector3.zero) // Prevent rotation issues when direction is zero
+                {
+                    Quaternion targetRotation = Quaternion.LookRotation(direction);
+                    animator.transform.rotation = Quaternion.Slerp(animator.transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+                }
             
                 // Should unit transition to attack state?
-                // float distanceFromTarget = Vector3.Distance(attackController.targetToAttack.position, animator.transform.position);
-                // if(distanceFromTarget < attackingDistance)
-                // {
-                //agent.SetDestination(animator.transform.position);
-                //   animator.SetBool("isAttacking", true);
-                // }
+                float distanceFromTarget = Vector3.Distance(attackController.targetToAttack.position, animator.transform.position);
+                if(distanceFromTarget < attackingDistance)
+                {
+                    agent.SetDestination(animator.transform.position);
+                    animator.SetBool("isAttacking", true);
+                }
             }
         }
 
