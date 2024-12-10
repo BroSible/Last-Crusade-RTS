@@ -9,9 +9,9 @@ public class UnitAttackState : StateMachineBehaviour
     NavMeshAgent agent;
     AttackController attackController;
 
-    public float stopAttackingDistance = 1.2f;
+    public float stopAttackingDistance;
 
-    public float attackRate = 2f;
+    public float attackRate;
     public float attackTimer;
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -39,12 +39,6 @@ public class UnitAttackState : StateMachineBehaviour
             {
                 attackTimer -= Time.deltaTime;
             }
-
-
-
-
-
-
 
             // Should unit still attack
             float distanceFromTarget = Vector3.Distance(attackController.targetToAttack.position, animator.transform.position);

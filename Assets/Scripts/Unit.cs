@@ -5,9 +5,17 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
+    public float unitHealth;
+    public float unitMaxHealth;
+
+    public HealthTracker healthTracker;
+
     void Start()
     {
         UnitSelectionManager.Instance.allUnitsList.Add(gameObject);
+
+        unitHealth = unitMaxHealth;
+        UpdateHealthUI();
     }
 
     void OnDestroy()
@@ -15,8 +23,20 @@ public class Unit : MonoBehaviour
         UnitSelectionManager.Instance.allUnitsList.Remove(gameObject);
     }
 
+    private void UpdateHealthUI()
+    {
+        healthTracker.UpdateSliderValue(unitHealth, unitMaxHealth);
+
+        if(unitHealth <= 0)
+        {
+            // unit died
+            Destroy(gameObject);
+        }
+    }
+
     internal void TakeDamage(int damageToInflict)
     {
-        throw new NotImplementedException();
+        unitHealth -= damageToInflict;
+        UpdateHealthUI();
     }
 }

@@ -65,7 +65,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ac213078f552944b9ebcdd5f93e6c32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackingDistance: 1.5
+  attackingDistance: 2
   rotationSpeed: 5
 --- !u!1102 &-6532791069387811794
 AnimatorState:
@@ -172,8 +172,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82b47ae3fd148bc4d8a1f55a9f3a961a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stopAttackingDistance: 2
-  attackRate: 2
+  stopAttackingDistance: 2.2
+  attackRate: 0.8
   attackTimer: 0
 --- !u!1101 &2604566015942118652
 AnimatorStateTransition:

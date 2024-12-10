@@ -8,7 +8,7 @@ public class UnitFollowState : StateMachineBehaviour
 {
     AttackController attackController;
     NavMeshAgent agent;
-    public float attackingDistance = 1f;
+    public float attackingDistance;
     public float rotationSpeed = 5.0f;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
@@ -38,6 +38,7 @@ public class UnitFollowState : StateMachineBehaviour
                 // Restrict rotation to Y-axis only
                 Vector3 direction = attackController.targetToAttack.position - animator.transform.position;
                 direction.y = 0; // Ignore Y-axis for rotation
+
                 if (direction != Vector3.zero) // Prevent rotation issues when direction is zero
                 {
                     Quaternion targetRotation = Quaternion.LookRotation(direction);
@@ -46,15 +47,14 @@ public class UnitFollowState : StateMachineBehaviour
             
                 // Should unit transition to attack state?
                 float distanceFromTarget = Vector3.Distance(attackController.targetToAttack.position, animator.transform.position);
-                if(distanceFromTarget < attackingDistance)
+                if(distanceFromTarget <= attackingDistance)
                 {
                     agent.SetDestination(animator.transform.position);
                     animator.SetBool("isAttacking", true);
+                    Debug.Log("Can attack");
                 }
             }
         }
-
-
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
