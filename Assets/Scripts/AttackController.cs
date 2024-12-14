@@ -11,7 +11,14 @@ public class AttackController : MonoBehaviour
     {
         if (other.CompareTag("Enemy") && targetToAttack == null)
         {
-            Debug.Log("aahha");
+            targetToAttack = other.transform;
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Enemy") && targetToAttack == null)
+        {
             targetToAttack = other.transform;
         }
     }

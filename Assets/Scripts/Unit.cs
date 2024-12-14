@@ -2,13 +2,17 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Unit : MonoBehaviour
 {
     public float unitHealth;
     public float unitMaxHealth;
-
     public HealthTracker healthTracker;
+
+    Animator animator;
+    NavMeshAgent agent;
+    UnitMovement unitMovement;
 
     void Start()
     {
@@ -16,6 +20,25 @@ public class Unit : MonoBehaviour
 
         unitHealth = unitMaxHealth;
         UpdateHealthUI();
+
+        animator = GetComponent<Animator>();
+        agent = GetComponent<NavMeshAgent>();
+        unitMovement = GetComponent<UnitMovement>();
+    }
+
+    private void Update()
+    {
+        // Agent reached destination
+        if(agent.remainingDistance > agent.stoppingDistance)
+        {
+            animator.SetBool("isFollow", true);
+        }
+
+        else
+        {
+            unitMovement.isCommandedToMove = false;
+            animator.SetBool("isFollow", false);
+        }
     }
 
     void OnDestroy()

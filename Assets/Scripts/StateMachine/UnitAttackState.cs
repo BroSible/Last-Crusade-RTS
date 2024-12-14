@@ -26,9 +26,6 @@ public class UnitAttackState : StateMachineBehaviour
         {
             LookAtTarget();
 
-            //Keep moving towards enemy
-            agent.SetDestination(attackController.targetToAttack.position);
-
             if (attackTimer <= 0)
             {
                 Attack();
@@ -50,7 +47,13 @@ public class UnitAttackState : StateMachineBehaviour
                 //Move to follow state
                 animator.SetBool("isAttacking", false);
             }
-        }   
+        }
+
+        else
+        {
+            //Move to follow state
+            animator.SetBool("isAttacking", false);
+        }
     }
 
     private void Attack()

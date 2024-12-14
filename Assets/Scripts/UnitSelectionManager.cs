@@ -11,6 +11,8 @@ public class UnitSelectionManager : MonoBehaviour
     public List<GameObject> allUnitsList = new List<GameObject>();
     public List<GameObject> unitsSelected = new List<GameObject>();
 
+    private UnitMovement unitMovement;
+
     public LayerMask clickable;
     public LayerMask ground;
     public LayerMask attackable;
@@ -35,6 +37,7 @@ public class UnitSelectionManager : MonoBehaviour
     void Start()
     {
         camera = Camera.main;
+        unitMovement = GetComponent<UnitMovement>();
     }
 
     void Update()
@@ -117,6 +120,35 @@ public class UnitSelectionManager : MonoBehaviour
         {
             attackCursorVisible = true;
         }
+
+        CursorSelector();
+    }
+
+    private void CursorSelector()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        if(Physics.Raycast(ray,out hit, Mathf.Infinity, clickable))
+        {
+            CursorManager.Instance.SetMarkerType(CursorManager.CursorType.Selectable);
+        }
+
+        else if(Physics.Raycast(ray,out hit, Mathf.Infinity, attackable) && unitsSelected.Count > 0 && AtleastOneOffensiveUnit(unitsSelected))
+        {
+            CursorManager.Instance.SetMarkerType(CursorManager.CursorType.Attackable);
+        }
+
+        else if(Physics.Raycast(ray,out hit, Mathf.Infinity, ground) && unitsSelected.Count > 0)
+        {
+            CursorManager.Instance.SetMarkerType(CursorManager.CursorType.Walkable);
+        }
+
+        else
+        {
+            CursorManager.Instance.SetMarkerType(CursorManager.CursorType.None);
+        }
+
     }
 
     private bool AtleastOneOffensiveUnit(List<GameObject> unitsSelected)
@@ -178,7 +210,7 @@ public class UnitSelectionManager : MonoBehaviour
 
     private void TriggerSelectionIndicator(GameObject unit, bool isVisible)
     {
-        unit.transform.GetChild(2).gameObject.SetActive(isVisible);
+        unit.transform.Find("Indicator").gameObject.SetActive(isVisible);
     }
 
     internal void DragSelect(GameObject unit)

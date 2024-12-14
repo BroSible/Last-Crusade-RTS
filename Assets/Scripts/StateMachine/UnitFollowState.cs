@@ -56,7 +56,4 @@ public class UnitFollowState : StateMachineBehaviour
             }
         }
     }
-
-    // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
-
 }

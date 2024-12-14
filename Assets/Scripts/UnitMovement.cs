@@ -10,10 +10,13 @@ public class UnitMovement : MonoBehaviour
 
     public bool isCommandedToMove;
 
+    DirectionIndicator directionIndicator;
+
     void Start()
     {
         camera = Camera.main;
         agent = GetComponent<NavMeshAgent>();
+        directionIndicator = GetComponent<DirectionIndicator>();
     }
 
     // Update is called once per frame
@@ -28,12 +31,7 @@ public class UnitMovement : MonoBehaviour
             {
                 isCommandedToMove = true;
                 agent.SetDestination(hit.point);
-            }
-
-            // Agent reached destination
-            if(agent.hasPath == false || agent.remainingDistance <= agent.stoppingDistance)
-            {
-                isCommandedToMove = false;  
+                directionIndicator.DrawLine(hit);
             }
         }
     }
