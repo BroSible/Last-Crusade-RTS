@@ -22,7 +22,7 @@ public class UnitAttackState : StateMachineBehaviour
 
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if(attackController.targetToAttack != null && animator.transform.GetComponent<UnitMovement>().isCommandedToMove == false)
+        if(attackController.targetToAttack != null)
         {
             LookAtTarget();
 

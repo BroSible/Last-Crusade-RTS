@@ -7,7 +7,7 @@ public class UnitMovement : MonoBehaviour
     public Camera camera;
     public NavMeshAgent agent;
     public LayerMask ground;
-
+    AttackController attackController;
     public bool isCommandedToMove;
 
     DirectionIndicator directionIndicator;
@@ -17,6 +17,7 @@ public class UnitMovement : MonoBehaviour
         camera = Camera.main;
         agent = GetComponent<NavMeshAgent>();
         directionIndicator = GetComponent<DirectionIndicator>();
+        attackController = GetComponent<AttackController>();
     }
 
     // Update is called once per frame
@@ -33,6 +34,11 @@ public class UnitMovement : MonoBehaviour
                 agent.SetDestination(hit.point);
                 directionIndicator.DrawLine(hit);
             }
+        }
+
+        if(agent.hasPath == false || agent.remainingDistance <= agent.stoppingDistance)
+        {
+            isCommandedToMove = false;
         }
     }
 }
