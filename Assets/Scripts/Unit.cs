@@ -8,11 +8,14 @@ public class Unit : MonoBehaviour
 {
     public float unitHealth;
     public float unitMaxHealth;
+    public bool isDead = false;
     public HealthTracker healthTracker;
-
+    BoxCollider boxCollider;
+    SphereCollider sphereCollider;
     Animator animator;
     NavMeshAgent agent;
     UnitMovement unitMovement;
+    AttackController attackController;
 
     void Start()
     {
@@ -24,21 +27,26 @@ public class Unit : MonoBehaviour
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         unitMovement = GetComponent<UnitMovement>();
+        boxCollider = GetComponent<BoxCollider>();
     }
 
     private void Update()
     {
-        // Agent reached destination
-        if(agent.remainingDistance > agent.stoppingDistance)
+        if(!isDead)
         {
-            animator.SetBool("isFollow", true);
-        }
+            // Agent reached destination
+            if(agent.remainingDistance > agent.stoppingDistance)
+            {
+                animator.SetBool("isFollow", true);
+            }
 
-        else
-        {
-            unitMovement.isCommandedToMove = false;
-            animator.SetBool("isFollow", false);
+            else
+            {
+                unitMovement.isCommandedToMove = false;
+                animator.SetBool("isFollow", false);
+            }
         }
+        
     }
 
     void OnDestroy()
@@ -52,8 +60,16 @@ public class Unit : MonoBehaviour
 
         if(unitHealth <= 0)
         {
-            // unit died
-            Destroy(gameObject);
+            animator.SetBool("isDead",true);
+            Destroy(boxCollider);
+            Destroy(sphereCollider);
+            //attackController.enabled = false;
+            isDead = true;
+            unitMovement.enabled = false;
+            agent.enabled = false;
+            gameObject.layer = 0;
+            gameObject.tag = "Untagged";
+            StartCoroutine(deathCoroutine());
         }
     }
 
@@ -61,5 +77,12 @@ public class Unit : MonoBehaviour
     {
         unitHealth -= damageToInflict;
         UpdateHealthUI();
+    }
+
+    private IEnumerator deathCoroutine()
+    {
+        yield return new WaitForSeconds(2f);
+        Destroy(gameObject);
+
     }
 }
