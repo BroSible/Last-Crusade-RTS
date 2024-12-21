@@ -77,8 +77,6 @@ public class PlacementState : IBuildingState
 
     private bool CheckPlacementValidity(Vector3Int gridPosition, int selectedObjectIndex)
     {
-      
-
         GridData selectedData = GetAllFloorIDs().Contains(database.objectsData[selectedObjectIndex].ID) ? floorData : furnitureData;
 
         return selectedData.CanPlaceObjectAt(gridPosition, database.objectsData[selectedObjectIndex].Size);
