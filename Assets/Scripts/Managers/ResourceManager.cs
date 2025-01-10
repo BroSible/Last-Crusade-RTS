@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class ResourceManager : MonoBehaviour
@@ -20,9 +21,16 @@ public class ResourceManager : MonoBehaviour
         }
     }
 
-    private int gold;
+    private void Start()
+    {
+        UpdateUI();
+    }
+
+    public int gold = 150;
 
     public event Action OnResourceChanged;
+
+    public TextMeshProUGUI goldUI;
 
     public enum ResourcesType
     {
@@ -35,6 +43,7 @@ public class ResourceManager : MonoBehaviour
         {
             case ResourcesType.Gold:
                 gold += amountToIncrease;
+                goldUI.text = gold.ToString();
                 break;
 
             default:
@@ -50,17 +59,55 @@ public class ResourceManager : MonoBehaviour
         {
             case ResourcesType.Gold:
                 gold -= amountToDecrease;
+                goldUI.text = gold.ToString();
                 break;
                 
             default:
                 break;
         }
-        
+
         OnResourceChanged?.Invoke();
+    }
+
+    private void OnEnable()
+    {
+        OnResourceChanged += UpdateUI;
+    }
+
+    private void OnDisable()
+    {
+        OnResourceChanged -= UpdateUI;
+    }
+
+    private void UpdateUI()
+    {
+        goldUI.text = gold.ToString();
     }
 
     public int GetGold()
     {
         return gold;
+    }
+
+    internal int GetResourceAmount(ResourcesType resource)
+    {
+        switch(resource)
+        {
+            case ResourcesType.Gold:
+                return gold;
+                
+            default:
+                break;
+        }
+
+        return 0;
+    }
+
+    internal void DecreaseResourcesBasedOnRequirement(ObjectData objectData)
+    {
+        foreach(BuildRequirement req in objectData.requirements)
+        {
+            DecreaseResource(req.resource, req.amount);
+        }
     }
 }

@@ -54,7 +54,7 @@ public class ObjectData
 [System.Serializable]
 public class BuildRequirement
 {
-    public string resource;
+    public ResourceManager.ResourcesType resource;
     public int amount;
 }
 

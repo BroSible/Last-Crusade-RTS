@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -24,7 +25,7 @@ public class BuySlot : MonoBehaviour
             originalColor = buttonImage.color; // Сохраняем исходный цвет кнопки
         }
 
-        UpdateAvailabilityUI();
+        HandleResourcesChanged();
     }
 
     public void ClickedOnSlot()
@@ -61,5 +62,35 @@ public class BuySlot : MonoBehaviour
                 buttonImage.color = unavailableColor; // Устанавливаем серый цвет
             }
         }
+    }
+
+    private void OnEnable()
+    {
+        ResourceManager.Instance.OnResourceChanged += HandleResourcesChanged;
+    }
+
+    private void OnDisable()
+    {
+        ResourceManager.Instance.OnResourceChanged -= HandleResourcesChanged;
+    }
+
+    private void HandleResourcesChanged()
+    {
+        ObjectData objectData = DatabaseManager.Instance.databaseSO.objectsData[databaseItemId];
+
+        bool requirementMet = true;
+
+        foreach(BuildRequirement req in objectData.requirements)
+        {
+            if(ResourceManager.Instance.GetResourceAmount(req.resource) < req.amount)
+            {
+                requirementMet = false;
+                break;
+            }
+        }
+
+        isAvailable = requirementMet;
+
+        UpdateAvailabilityUI();
     }
 }
