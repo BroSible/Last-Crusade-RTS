@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -31,14 +32,21 @@ public class UnitMovement : MonoBehaviour
             if(Physics.Raycast(ray, out hit, Mathf.Infinity, ground))
             {
                 isCommandedToMove = true;
+                StartCoroutine(NoCommand());
                 agent.SetDestination(hit.point);
                 directionIndicator.DrawLine(hit);
             }
         }
 
-        if(agent.hasPath == false || agent.remainingDistance <= agent.stoppingDistance)
-        {
-            isCommandedToMove = false;
-        }
+        // if(agent.hasPath == false || agent.remainingDistance <= agent.stoppingDistance)
+        // {
+        //     isCommandedToMove = false;
+        // }
+    }
+
+    IEnumerator NoCommand()
+    {
+        yield return new WaitForSeconds(1);
+        isCommandedToMove = false;
     }
 }
