@@ -62,7 +62,9 @@ public class PlacementState : IBuildingState
         ResourceManager.Instance.DecreaseResourcesBasedOnRequirement(database.objectsData[selectedObjectIndex]);
 
         // If this id is a floor id, then its a floor data, else its a furniture data
-        GridData selectedData = GetAllFloorIDs().Contains(database.objectsData[selectedObjectIndex].ID) ? floorData : furnitureData;
+        //GridData selectedData = GetAllFloorIDs().Contains(database.objectsData[selectedObjectIndex].ID) ? floorData : furnitureData;
+
+        GridData selectedData = floorData;
        
         selectedData.AddObjectAt(gridPosition,
             database.objectsData[selectedObjectIndex].Size,
@@ -80,7 +82,9 @@ public class PlacementState : IBuildingState
 
     private bool CheckPlacementValidity(Vector3Int gridPosition, int selectedObjectIndex)
     {
-        GridData selectedData = GetAllFloorIDs().Contains(database.objectsData[selectedObjectIndex].ID) ? floorData : furnitureData;
+        //GridData selectedData = GetAllFloorIDs().Contains(database.objectsData[selectedObjectIndex].ID) ? floorData : furnitureData;
+
+        GridData selectedData = floorData;
 
         // check, if the grid cell is already occupied by another object from the grid data
         if(!selectedData.CanPlaceObjectAt(gridPosition, database.objectsData[selectedObjectIndex].Size))

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlacementSystem : MonoBehaviour
 {
@@ -45,6 +46,11 @@ public class PlacementSystem : MonoBehaviour
 
         inputManager.OnClicked += PlaceStructure;
         inputManager.OnExit += StopPlacement;
+    }
+
+    public void RemovePlacementData(Vector3 position)
+    {
+        floorData.RemoveObjectAt(grid.WorldToCell(position));
     }
 
     public void StartRemoving()
