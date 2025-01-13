@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2264.672, g: 2410.3674, b: 3520.7231, a: 1}
+  m_IndirectSpecularColor: {r: 2264.1584, g: 2409.098, b: 3517.688, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -131,80 +131,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: -1194432968304574101, guid: d78188a04ae94fb418ca4acc157a8c3a,
-        type: 3}
-      propertyPath: isEnemy
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -1194432968304574101, guid: d78188a04ae94fb418ca4acc157a8c3a,
-        type: 3}
-      propertyPath: constMaxHealth
-      value: 1000
-      objectReference: {fileID: 0}
-    - target: {fileID: -452911301471506444, guid: d78188a04ae94fb418ca4acc157a8c3a,
-        type: 3}
-      propertyPath: m_Convex
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 395192391358948696, guid: d78188a04ae94fb418ca4acc157a8c3a,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 905038970507947325, guid: d78188a04ae94fb418ca4acc157a8c3a,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 1474349466206568891, guid: d78188a04ae94fb418ca4acc157a8c3a,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 2708030162524610016, guid: d78188a04ae94fb418ca4acc157a8c3a,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 2971007676085081353, guid: d78188a04ae94fb418ca4acc157a8c3a,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 3294375928203962243, guid: d78188a04ae94fb418ca4acc157a8c3a,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3313715762312480038, guid: d78188a04ae94fb418ca4acc157a8c3a,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 3484400411792144304, guid: d78188a04ae94fb418ca4acc157a8c3a,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 7866539495193671283, guid: d78188a04ae94fb418ca4acc157a8c3a,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
     - target: {fileID: 8632874819929043668, guid: d78188a04ae94fb418ca4acc157a8c3a,
         type: 3}
       propertyPath: m_Name
       value: Medieval_house_lite
-      objectReference: {fileID: 0}
-    - target: {fileID: 8632874819929043668, guid: d78188a04ae94fb418ca4acc157a8c3a,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 8857797039112842297, guid: d78188a04ae94fb418ca4acc157a8c3a,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8972843108894550126, guid: d78188a04ae94fb418ca4acc157a8c3a,
         type: 3}
@@ -266,16 +196,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 0}
-    - {fileID: -452911301471506444, guid: d78188a04ae94fb418ca4acc157a8c3a, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8632874819929043668, guid: d78188a04ae94fb418ca4acc157a8c3a,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1346704833}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d78188a04ae94fb418ca4acc157a8c3a, type: 3}
 --- !u!1 &28757657
 GameObject:
@@ -3511,33 +3435,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1346704826 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8632874819929043668, guid: d78188a04ae94fb418ca4acc157a8c3a,
-    type: 3}
-  m_PrefabInstance: {fileID: 25882275}
-  m_PrefabAsset: {fileID: 0}
---- !u!65 &1346704833
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1346704826}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 6.602764, y: 6.518364, z: 7.3388534}
-  m_Center: {x: 0.2248656, y: 3.2119339, z: 0.16544025}
 --- !u!1001 &1366283320
 PrefabInstance:
   m_ObjectHideFlags: 0
