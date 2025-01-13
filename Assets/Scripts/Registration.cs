@@ -30,7 +30,8 @@ public class Registration : MonoBehaviour
 
     private bool ValidateUsername(string username)
     {
-        Regex regex = new Regex("^[A-Z][a-z]{2,}$");
+        Regex regex = new Regex("^[A-Z][a-z0-9]{2,}$");
+
         return regex.IsMatch(username);
     }
 

@@ -7,10 +7,6 @@ public class AttackController : MonoBehaviour
 {
     public Transform targetToAttack;
     public int unitDamage;
-    
-    void Start()
-    {
-    }   
 
     private void OnTriggerEnter(Collider other)
     {
