@@ -36,9 +36,10 @@ public class UnitAttackState : StateMachineBehaviour
             {
                 attackTimer -= Time.deltaTime;
             }
-
-            // Should unit still attack
-            float distanceFromTarget = Vector3.Distance(attackController.targetToAttack.position, animator.transform.position);
+            
+            Collider targetCollider = attackController.targetToAttack.GetComponent<Collider>();
+            Vector3 closestPoint = targetCollider.ClosestPoint(animator.transform.position);
+            float distanceFromTarget = Vector3.Distance(closestPoint, animator.transform.position);
 
             if(distanceFromTarget > stopAttackingDistance || attackController.targetToAttack == null)
             {

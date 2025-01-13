@@ -21,39 +21,43 @@ public class UnitFollowState : StateMachineBehaviour
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        // Should unit transition to idle state?
-        if(attackController.targetToAttack == null)
+        if (attackController.targetToAttack == null)
         {
             animator.SetBool("isFollow", false);
         }
-
         else
         {
-            // If there is no other direct command to move
-            if(animator.transform.GetComponent<UnitMovement>().isCommandedToMove == false)
+            if (animator.transform.GetComponent<UnitMovement>().isCommandedToMove == false)
             {
-                // Moving unit towards enemy
-                agent.SetDestination(attackController.targetToAttack.position);
-
-                // Restrict rotation to Y-axis only
-                Vector3 direction = attackController.targetToAttack.position - animator.transform.position;
-                direction.y = 0; // Ignore Y-axis for rotation
-
-                if (direction != Vector3.zero) // Prevent rotation issues when direction is zero
+                // Получение коллайдера цели
+                Collider targetCollider = attackController.targetToAttack.GetComponent<Collider>();
+                if (targetCollider != null)
                 {
-                    Quaternion targetRotation = Quaternion.LookRotation(direction);
-                    animator.transform.rotation = Quaternion.Slerp(animator.transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
-                }
-            
-                // Should unit transition to attack state?
-                float distanceFromTarget = Vector3.Distance(attackController.targetToAttack.position, animator.transform.position);
-                if(distanceFromTarget <= attackingDistance)
-                {
-                    agent.SetDestination(animator.transform.position);
-                    animator.SetBool("isAttacking", true);
-                    Debug.Log("Can attack");
+                    // Вычисляем ближайшую точку на границе коллайдера цели
+                    Vector3 closestPoint = targetCollider.ClosestPoint(animator.transform.position);
+                    agent.SetDestination(closestPoint);
+
+                    // Ограничиваем вращение по оси Y
+                    Vector3 direction = closestPoint - animator.transform.position;
+                    direction.y = 0; // Игнорируем ось Y
+
+                    if (direction != Vector3.zero)
+                    {
+                        Quaternion targetRotation = Quaternion.LookRotation(direction);
+                        animator.transform.rotation = Quaternion.Slerp(animator.transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+                    }
+
+                    // Переход к атаке, если юнит достаточно близко к цели
+                    float distanceFromTarget = Vector3.Distance(animator.transform.position, closestPoint);
+                    if (distanceFromTarget <= attackingDistance)
+                    {
+                        agent.SetDestination(animator.transform.position);
+                        animator.SetBool("isAttacking", true);
+                        Debug.Log("Can attack");
+                    }
                 }
             }
         }
     }
+
 }
