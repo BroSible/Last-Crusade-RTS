@@ -66,13 +66,25 @@ public class BuySlot : MonoBehaviour
 
     private void OnEnable()
     {
-        ResourceManager.Instance.OnResourceChanged += HandleResourcesChanged;
+        if (ResourceManager.Instance != null)
+        {
+            ResourceManager.Instance.OnResourceChanged += HandleResourcesChanged;
+            Debug.Log($"Кнопка с ID {databaseItemId} подписалась на событие");
+        }
+        else
+        {
+            Debug.LogError($"ResourceManager.Instance = null для кнопки с ID {databaseItemId}. Проверь порядок инициализации.");
+        }
     }
+
+
 
     private void OnDisable()
     {
         ResourceManager.Instance.OnResourceChanged -= HandleResourcesChanged;
+        
     }
+
 
     private void HandleResourcesChanged()
     {

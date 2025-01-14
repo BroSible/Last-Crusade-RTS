@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2264.1584, g: 2409.098, b: 3517.688, a: 1}
+  m_IndirectSpecularColor: {r: 2266.8762, g: 2414.3088, b: 3531.3247, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -123,84 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1001 &25882275
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 8632874819929043668, guid: d78188a04ae94fb418ca4acc157a8c3a,
-        type: 3}
-      propertyPath: m_Name
-      value: Medieval_house_lite
-      objectReference: {fileID: 0}
-    - target: {fileID: 8972843108894550126, guid: d78188a04ae94fb418ca4acc157a8c3a,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 31.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 8972843108894550126, guid: d78188a04ae94fb418ca4acc157a8c3a,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.1417458
-      objectReference: {fileID: 0}
-    - target: {fileID: 8972843108894550126, guid: d78188a04ae94fb418ca4acc157a8c3a,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 15.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8972843108894550126, guid: d78188a04ae94fb418ca4acc157a8c3a,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8972843108894550126, guid: d78188a04ae94fb418ca4acc157a8c3a,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8972843108894550126, guid: d78188a04ae94fb418ca4acc157a8c3a,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8972843108894550126, guid: d78188a04ae94fb418ca4acc157a8c3a,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8972843108894550126, guid: d78188a04ae94fb418ca4acc157a8c3a,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8972843108894550126, guid: d78188a04ae94fb418ca4acc157a8c3a,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8972843108894550126, guid: d78188a04ae94fb418ca4acc157a8c3a,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9091195094188798227, guid: d78188a04ae94fb418ca4acc157a8c3a,
-        type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9091195094188798227, guid: d78188a04ae94fb418ca4acc157a8c3a,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: d78188a04ae94fb418ca4acc157a8c3a, type: 3}
 --- !u!1 &28757657
 GameObject:
   m_ObjectHideFlags: 0
@@ -215,7 +137,7 @@ GameObject:
   - component: {fileID: 28757659}
   - component: {fileID: 28757662}
   m_Layer: 5
-  m_Name: Button (1)
+  m_Name: Barracks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -284,7 +206,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 28757660}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 28757662}
+        m_TargetAssemblyTypeName: BuySlot, Assembly-CSharp
+        m_MethodName: ClickedOnSlot
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &28757660
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -330,14 +264,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 28757657}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 37e0a3e01cecf8b4e88a4356f3d790eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isAvailable: 0
   buyingSystem: {fileID: 2077151655}
-  databaseItemId: 0
+  databaseItemId: 1
 --- !u!114 &50558252 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2851240447946641353, guid: c0fb8fcb57b244e4eb6dbc7b287d77cf,
@@ -5493,7 +5427,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Button
+  m_text: Barracks
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -6376,4 +6310,3 @@ SceneRoots:
   - {fileID: 952212843}
   - {fileID: 821452799}
   - {fileID: 189208587}
-  - {fileID: 25882275}
