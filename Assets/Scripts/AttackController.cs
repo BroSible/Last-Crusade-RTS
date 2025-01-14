@@ -8,6 +8,11 @@ public class AttackController : MonoBehaviour
     public Transform targetToAttack;
     public int unitDamage;
 
+    void Start()
+    {
+        
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Enemy") && targetToAttack == null)
