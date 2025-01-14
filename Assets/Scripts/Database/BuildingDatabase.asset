@@ -26,10 +26,20 @@ MonoBehaviour:
   - <Name>k__BackingField: Barracks
     <ID>k__BackingField: 1
     description: Can Create a Units
-    <Size>k__BackingField: {x: 24, y: 24}
+    <Size>k__BackingField: {x: 35, y: 35}
     <Prefab>k__BackingField: {fileID: 1100020323477387243, guid: 81775bdf0dd478b42b8ab8e9755e83b2,
       type: 3}
     <requirements>k__BackingField:
     - resource: 0
       amount: 100
+    <benefits>k__BackingField: []
+  - <Name>k__BackingField: Peasant
+    <ID>k__BackingField: 2
+    description: Can Create a Units
+    <Size>k__BackingField: {x: 2, y: 2}
+    <Prefab>k__BackingField: {fileID: 4561353814361610027, guid: 685b06af411380a439674c6e25fa364e,
+      type: 3}
+    <requirements>k__BackingField:
+    - resource: 0
+      amount: 25
     <benefits>k__BackingField: []
