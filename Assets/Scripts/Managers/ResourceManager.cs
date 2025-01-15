@@ -79,7 +79,7 @@ public class ResourceManager : MonoBehaviour
         OnResourceChanged -= UpdateUI;
     }
 
-    private void UpdateUI()
+    public void UpdateUI()
     {
         goldUI.text = gold.ToString();
     }

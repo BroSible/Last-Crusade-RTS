@@ -43,3 +43,13 @@ MonoBehaviour:
     - resource: 0
       amount: 25
     <benefits>k__BackingField: []
+  - <Name>k__BackingField: Mine
+    <ID>k__BackingField: 3
+    description: Get gold per second
+    <Size>k__BackingField: {x: 24, y: 24}
+    <Prefab>k__BackingField: {fileID: 7972764168776864974, guid: 81a818977fc1b2c49a67804af08ddc04,
+      type: 3}
+    <requirements>k__BackingField:
+    - resource: 0
+      amount: 450
+    <benefits>k__BackingField: []

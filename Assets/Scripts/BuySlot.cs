@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class BuySlot : MonoBehaviour
 {
+    public static BuySlot Instance { get; set; }
     public bool isAvailable;
 
     public BuyingSystem buyingSystem;
@@ -36,7 +37,7 @@ public class BuySlot : MonoBehaviour
         }
     }
 
-    private void UpdateAvailabilityUI()
+    public void UpdateAvailabilityUI()
     {
         if (isAvailable)
         {
@@ -64,7 +65,7 @@ public class BuySlot : MonoBehaviour
         }
     }
 
-    private void OnEnable()
+    public void OnEnable()
     {
         if (ResourceManager.Instance != null)
         {
@@ -79,14 +80,14 @@ public class BuySlot : MonoBehaviour
 
 
 
-    private void OnDisable()
+    public void OnDisable()
     {
         ResourceManager.Instance.OnResourceChanged -= HandleResourcesChanged;
         
     }
 
 
-    private void HandleResourcesChanged()
+    public void HandleResourcesChanged()
     {
         ObjectData objectData = DatabaseManager.Instance.databaseSO.objectsData[databaseItemId];
 
