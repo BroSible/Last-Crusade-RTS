@@ -1,51 +1,74 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class BarracksGrid : MonoBehaviour
 {
-    public float gridSize = 1f;          // Размер ячейки сетки
-    public int gridWidth = 10;           // Ширина сетки (в ячейках)
-    public int gridHeight = 10;          // Высота сетки (в ячейках)
-    public float gridRadius = 5f;        // Радиус зоны вокруг объекта, где можно ставить юнитов
+    [Header("Grid settings")]
+    [SerializeField] private Vector2Int gridSize = new Vector2Int(5, 5); 
+    [SerializeField] private float cellSize = 1f;                      
+    [SerializeField] private Vector3 gridOffset = Vector3.zero; 
 
-    private void OnDrawGizmos()
+    public static BarracksGrid Instance { get; set; }   
+
+    private List<Vector3> availablePositions = new();
+    
+    // Новая переменная для хранения состояния размещения юнита в сетке
+    public bool isUnitInGrid = false;
+
+    private void Start()
     {
-        // Позиция объекта, на котором висит этот скрипт
-        Vector3 objectPosition = transform.position;
+        GeneratePlacementGrid();
+    }
 
-        Gizmos.color = Color.green;
+    private void GeneratePlacementGrid()
+    {
+        Vector3 origin = transform.position + gridOffset - new Vector3(gridSize.x / 2f * cellSize, 0, gridSize.y / 2f * cellSize);
 
-        // Рисуем сетку вокруг объекта
-        for (int x = 0; x < gridWidth; x++)
+        for (int x = 0; x < gridSize.x; x++)
         {
-            for (int z = 0; z < gridHeight; z++)
+            for (int z = 0; z < gridSize.y; z++)
             {
-                // Вычисляем координаты центра ячейки
-                Vector3 position = new Vector3(x * gridSize, 0f, z * gridSize) + objectPosition;
-
-                // Проверяем, находится ли ячейка внутри радиуса
-                if (Vector3.Distance(position, objectPosition) <= gridRadius)
-                {
-                    Gizmos.DrawWireCube(position, new Vector3(gridSize, 0.1f, gridSize));
-                }
+                Vector3 pos = origin + new Vector3(x * cellSize, 0, z * cellSize);
+                availablePositions.Add(pos);
             }
         }
     }
 
-    // Проверка, можно ли разместить юнита на указанной позиции
-    public bool CanPlaceUnit(Vector3 position)
+    public bool IsWithinPlacementZone(Vector3 position)
     {
-        Vector3 objectPosition = transform.position;
-        Vector3 offsetPosition = position - objectPosition;
-        float distanceToCenter = offsetPosition.magnitude;
-
-        // Проверяем, что позиция внутри радиуса и не выходит за пределы сетки
-        if (distanceToCenter <= gridRadius)
+        foreach (Vector3 pos in availablePositions)
         {
-            return true;
+            if (Vector3.Distance(pos, position) <= cellSize / 2)
+                return true;
         }
-
         return false;
+    }
+
+    // Метод, который проверяет, находится ли юнит в сетке
+    public void CheckUnitPlacement(Vector3 unitPosition)
+    {
+        if (IsWithinPlacementZone(unitPosition))
+        {
+            isUnitInGrid = true;
+        }
+        else
+        {
+            isUnitInGrid = false;
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Vector3 origin = transform.position + gridOffset - new Vector3(gridSize.x / 2f * cellSize, 0, gridSize.y / 2f * cellSize);
+
+        for (int x = 0; x < gridSize.x; x++)
+        {
+            for (int z = 0; z < gridSize.y; z++)
+            {
+                Vector3 pos = origin + new Vector3(x * cellSize, 0, z * cellSize);
+                Gizmos.DrawWireCube(pos + Vector3.up * 0.1f, new Vector3(cellSize, 0.1f, cellSize));
+            }
+        }
     }
 }

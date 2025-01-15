@@ -6,13 +6,12 @@ using UnityEngine.UIElements;
 
 public class PlacementSystem : MonoBehaviour
 {
-
     [SerializeField] private InputManager inputManager;
     [SerializeField] private Grid grid;
 
     [SerializeField] private ObjectsDatabseSO database;
 
-    [SerializeField] private GridData floorData, furnitureData; // floor things like roads, furniture change to "buildings"
+    [SerializeField] private GridData floorData, furnitureData;
 
     [SerializeField] private PreviewSystem previewSystem;
 
@@ -20,25 +19,21 @@ public class PlacementSystem : MonoBehaviour
 
     [SerializeField] private ObjectPlacer objectPlacer;
 
+    [SerializeField] private LayerMask obstacleLayer;  // Слой препятствий для проверки
+
     int selectedID;
 
     IBuildingState buildingState;
 
     private void Start()
     {
-
         floorData = new();
         furnitureData = new();
     }
 
     public void StartPlacement(int ID)
     {
-        Debug.Log("Should Start Placement");
-
         selectedID = ID;
-
-        Debug.Log("Placement ID: " + ID);
-
 
         StopPlacement();
 
@@ -65,46 +60,58 @@ public class PlacementSystem : MonoBehaviour
 
     private void PlaceStructure()
     {
-        // if(inputManager.IsPointerOverUI()){
-        //     Debug.Log("Pointer was over UI - Returned");
-        //     return;
-        // }
-        // When we click on a cell, we get the cell
         Vector3 mousePosition = inputManager.GetSelectedMapPosition();
         Vector3Int gridPosition = grid.WorldToCell(mousePosition);
+        Vector3 worldPosition = grid.CellToWorld(gridPosition);
+
+        ObjectData selectedObject = database.GetObjectByID(selectedID);
+
+        // Проверка, является ли объект юнитом
+        if (selectedObject.Prefab.TryGetComponent(out Unit unit))
+        {
+            // Проверка на препятствия
+            if (IsPositionBlocked(worldPosition))
+            {
+                Debug.Log("Нельзя разместить юнита: позиция занята препятствием.");
+                return;
+            }
+
+            // Проверка, входит ли позиция в зону размещения (например, у казармы)
+            if (!IsWithinBarracksPlacementZone(worldPosition))
+            {
+                Debug.Log("Нельзя разместить юнита за пределами зоны размещения.");
+                return;
+            }
+        }
 
         buildingState.OnAction(gridPosition);
 
-
-        // ---- Using the ID remove used resources from resource manager ---- // 
-        ObjectData ob = database.GetObjectByID(selectedID);
-       // ResourceManager.Instance.RemoveResourcesBasedOnRequirements(ob, database);
-
-        // ---- Add Buildable Benifits ---- // 
-        foreach (BuildBenefits bf in ob.benefits)
-        {
-            CalculateAndAddBenefit(bf);
-        }
-
-        // ---- Stop the placement after every build ---- // 
         StopPlacement();
     }
 
-    private void CalculateAndAddBenefit(BuildBenefits bf)
+    private bool IsPositionBlocked(Vector3 position)
     {
-        switch (bf.benefitType)
+        float checkRadius = 0.5f; // Радиус проверки
+        return Physics.CheckSphere(position, checkRadius, obstacleLayer);
+    }
+
+    private bool IsWithinBarracksPlacementZone(Vector3 position)
+    {
+        BarracksGrid[] barracksZones = FindObjectsOfType<BarracksGrid>();
+
+        foreach (var zone in barracksZones)
         {
-            case BuildBenefits.BenefitType.Housing:
-             //   StatusManager.Instance.IncreaseHousing(bf.benefitAmount);
-                break;
+            if (zone.IsWithinPlacementZone(position))
+                return true;
         }
+        return false;
     }
 
     private void StopPlacement()
     {
         if (buildingState == null)
             return;
-       
+
         buildingState.EndState();
 
         inputManager.OnClicked -= PlaceStructure;
@@ -117,11 +124,9 @@ public class PlacementSystem : MonoBehaviour
 
     private void Update()
     {
-        // We return because we did not selected an item to place (not in placement mode)
-        // So there is no need to show cell indicator
         if (buildingState == null)
             return;
-      
+
         Vector3 mousePosition = inputManager.GetSelectedMapPosition();
         Vector3Int gridPosition = grid.WorldToCell(mousePosition);
 
@@ -130,6 +135,5 @@ public class PlacementSystem : MonoBehaviour
             buildingState.UpdateState(gridPosition);
             lastDetectedPosition = gridPosition;
         }
-
     }
 }

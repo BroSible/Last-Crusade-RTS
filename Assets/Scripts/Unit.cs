@@ -63,7 +63,6 @@ public class Unit : MonoBehaviour, IDamageable
             animator.SetBool("isDead",true);
             Destroy(boxCollider);
             Destroy(sphereCollider);
-            //attackController.enabled = false;
             isDead = true;
             unitMovement.enabled = false;
             agent.enabled = false;
