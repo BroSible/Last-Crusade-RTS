@@ -804,17 +804,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 05d0dcbe2e37f7c4a9ba340de427e5c5,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 31.6
+      value: 27.785114
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 05d0dcbe2e37f7c4a9ba340de427e5c5,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.1417458
+      value: -0.0000019073486
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 05d0dcbe2e37f7c4a9ba340de427e5c5,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 15.5
+      value: 39.22365
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 05d0dcbe2e37f7c4a9ba340de427e5c5,
         type: 3}
@@ -923,7 +923,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   constMaxHealth: 100
   healthTracker: {fileID: 2301076513323179533}
-  isEnemy: 1
+  isEnemy: 0
   buildPosition: {x: 0, y: 0, z: 0}
 --- !u!65 &3522436183539081139
 BoxCollider:
