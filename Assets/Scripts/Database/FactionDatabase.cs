@@ -10,7 +10,7 @@ public class FactionsDatabase : MonoBehaviour
     {
         CreateTable();
         InsertFactions();
-        Debug.Log("Database setup completed.");
+        Debug.Log("Faction Database setup completed.");
     }
 
     private void CreateTable()

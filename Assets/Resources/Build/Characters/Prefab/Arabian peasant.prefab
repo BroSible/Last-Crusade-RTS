@@ -660,7 +660,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitHealth: 40
-  unitMaxHealth: 100
+  unitMaxHealth: 40
   isDead: 0
   healthTracker: {fileID: 7631496537917946486}
 --- !u!114 &3821350627462523333
@@ -676,7 +676,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetToAttack: {fileID: 0}
-  unitDamage: 100
+  unitDamage: 3
 --- !u!114 &6993774736865476501
 MonoBehaviour:
   m_ObjectHideFlags: 0

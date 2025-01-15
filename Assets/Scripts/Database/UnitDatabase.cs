@@ -12,10 +12,9 @@ public class UnitDatabase: MonoBehaviour
     {
         CreateTable();
         InsertUnits();
-        Debug.Log("Database setup completed.");
+        Debug.Log("Unit Database load completed.");
     }
 
-    // Метод для создания таблицы юнитов
     private void CreateTable()
     {
         using (var connection = new SqliteConnection(dbName))
@@ -39,7 +38,6 @@ public class UnitDatabase: MonoBehaviour
         }
     }
 
-    // Метод для вставки данных из UnitDatabaseSO в базу данных
     private void InsertUnits()
     {
         using (var connection = new SqliteConnection(dbName))
@@ -49,7 +47,6 @@ public class UnitDatabase: MonoBehaviour
             {
                 foreach (var unit in unitDatabaseSO.units)
                 {
-                    // Вставляем каждый юнит
                     command.CommandText = "INSERT INTO units (name, description, maxHealth, unitDamage, speedUnit, attackingDistance, stopAttackingDistance) VALUES (@name, @description, @maxHealth, @unitDamage, @speedUnit, @attackingDistance, @stopAttackingDistance);";
                     command.Parameters.Clear();
                     command.Parameters.AddWithValue("@name", unit.Name);
