@@ -3,14 +3,33 @@ using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 
-public class SpawnPlayers : MonoBehaviour
+public class SpawnPlayers : MonoBehaviourPun
 {
-    public GameObject player;
-    public float minX, minY, minZ, maxX, maxY, maxZ;
+     public Camera playerCamera1;  // Камера для игрока 1
+    public Camera playerCamera2;  // Камера для игрока 2
 
     void Start()
     {
-        Vector3 randomPosition = new Vector3(Random.Range(minX, maxX), Random.Range(minY, maxY), Random.Range(minZ, maxZ));
-        PhotonNetwork.Instantiate(player.name, randomPosition, Quaternion.Euler(45f, 45f, 0f));
+        // Проверяем, какой игрок присоединился
+        if (photonView.IsMine)
+        {
+            // Активируем камеру для этого игрока
+            if (PhotonNetwork.LocalPlayer.ActorNumber == 1)
+            {
+                playerCamera1.gameObject.SetActive(true);  // Включаем камеру игрока 1
+                playerCamera2.gameObject.SetActive(false); // Выключаем камеру игрока 2
+            }
+            else if (PhotonNetwork.LocalPlayer.ActorNumber == 2)
+            {
+                playerCamera1.gameObject.SetActive(false); // Выключаем камеру игрока 1
+                playerCamera2.gameObject.SetActive(true);  // Включаем камеру игрока 2
+            }
+        }
+        else
+        {
+            // Если это не наш игрок, выключаем камеры
+            playerCamera1.gameObject.SetActive(false);
+            playerCamera2.gameObject.SetActive(false);
+        }
     }
 }

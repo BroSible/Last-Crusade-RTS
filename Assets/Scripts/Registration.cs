@@ -97,7 +97,7 @@ public class Registration : MonoBehaviour
                             errorText.text = "Your welcome";
                             Debug.Log("Login successful");
                             Enter = true;
-                            SceneManager.LoadScene("Menu");
+                            SceneManager.LoadScene("LoadingScene");
                         }
                         else
                         {
@@ -177,7 +177,7 @@ public class Registration : MonoBehaviour
                     command.ExecuteNonQuery();
                  
                     errorText.text = "Registration successful!";
-                   SceneManager.LoadScene("Menu");
+                   SceneManager.LoadScene("LoadingScene");
                 }
             }
              catch(Exception ex)
