@@ -33,8 +33,8 @@ public class ObjectPlacer : MonoBehaviour
             unit.enabled = true;  // Активируем скрипт юнита
             attackController.enabled = true;
             animator.enabled = true;
-            gameObject.tag = "Unit";
-            gameObject.layer = 6;
+            newObject.gameObject.tag = "Unit";
+            newObject.gameObject.layer = 6;
             navMeshAgent.enabled = true;
         }
 

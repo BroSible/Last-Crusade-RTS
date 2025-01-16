@@ -6,7 +6,7 @@ using UnityEngine.AI;
 
 public class Constructable : MonoBehaviour, IDamageable
 {
-    private float constHealth;
+    public float constHealth;
     public float constMaxHealth;
     public HealthTracker healthTracker;
     public bool isEnemy = false;
