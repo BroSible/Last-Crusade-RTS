@@ -66,8 +66,8 @@ public class Unit : MonoBehaviour, IDamageable
             isDead = true;
             unitMovement.enabled = false;
             agent.enabled = false;
-            gameObject.layer = 0;
-            gameObject.tag = "Untagged";
+            //gameObject.layer = 0;
+            //gameObject.tag = "Untagged";
             StartCoroutine(deathCoroutine());
         }
     }

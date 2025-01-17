@@ -23,3 +23,10 @@ MonoBehaviour:
     speedUnit: 2
     attackingDistance: 3
     stopAttackingDistance: 3.2
+  - <Name>k__BackingField: Crusader
+    description: "\u0421\u0438\u043B\u044C\u043D\u044B\u0439 \u044E\u043D\u0438\u0442"
+    maxHealth: 120
+    unitDamage: 12
+    speedUnit: 4
+    attackingDistance: 3
+    stopAttackingDistance: 3.2

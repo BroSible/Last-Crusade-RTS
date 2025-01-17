@@ -1,35 +1,42 @@
-using System.Collections;
-using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 
-public class SpawnPlayers : MonoBehaviourPun
+public class SpawnPlayers : MonoBehaviourPunCallbacks
 {
-     public Camera playerCamera1;  // Камера для игрока 1
-    public Camera playerCamera2;  // Камера для игрока 2
+     public GameObject cameraPrefab; // Префаб камеры игрока
+    public Transform[] spawnPoints; // Точки спавна камер
+    public PlacementSystem placementSystem; // Ссылка на систему размещения
 
     void Start()
     {
-        // Проверяем, какой игрок присоединился
-        if (photonView.IsMine)
+        SpawnPlayerCamera();
+    }
+
+    void SpawnPlayerCamera()
+    {
+        if (PhotonNetwork.IsConnected && cameraPrefab != null)
         {
-            // Активируем камеру для этого игрока
-            if (PhotonNetwork.LocalPlayer.ActorNumber == 1)
+            int spawnIndex = PhotonNetwork.LocalPlayer.ActorNumber - 1;
+            Vector3 spawnPosition = spawnPoints[spawnIndex % spawnPoints.Length].position;
+            Quaternion spawnRotation = cameraPrefab.transform.rotation; // Используем ротацию префаба
+            GameObject playerCamera = PhotonNetwork.Instantiate(cameraPrefab.name, spawnPosition, spawnRotation);
+
+            // Включаем камеру только для локального игрока
+            if (playerCamera.TryGetComponent(out Camera cam))
             {
-                playerCamera1.gameObject.SetActive(true);  // Включаем камеру игрока 1
-                playerCamera2.gameObject.SetActive(false); // Выключаем камеру игрока 2
+                cam.enabled = true;
+                //placementSystem.SetActiveCamera(cam); // Устанавливаем активную камеру в системе размещения
             }
-            else if (PhotonNetwork.LocalPlayer.ActorNumber == 2)
+            else
             {
-                playerCamera1.gameObject.SetActive(false); // Выключаем камеру игрока 1
-                playerCamera2.gameObject.SetActive(true);  // Включаем камеру игрока 2
+                Camera camInChildren = playerCamera.GetComponentInChildren<Camera>();
+                if (camInChildren != null)
+                {
+                    camInChildren.enabled = true;
+                    //placementSystem.SetActiveCamera(camInChildren);
+                }
             }
-        }
-        else
-        {
-            // Если это не наш игрок, выключаем камеры
-            playerCamera1.gameObject.SetActive(false);
-            playerCamera2.gameObject.SetActive(false);
         }
     }
 }
+

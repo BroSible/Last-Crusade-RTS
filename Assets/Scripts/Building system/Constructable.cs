@@ -53,4 +53,5 @@ public class Constructable : MonoBehaviour, IDamageable
         obstacle = GetComponentInChildren<NavMeshObstacle>();
         obstacle.enabled = true;
     }
+
 }

@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 using UnityEngine.UIElements;
+using System.Runtime.CompilerServices;
 
 public class UnitSelectionManager : MonoBehaviour
 {
@@ -21,6 +23,8 @@ public class UnitSelectionManager : MonoBehaviour
 
     private Camera camera;
 
+    PhotonView view;
+
     private void Awake()
     {
         if(Instance != null && Instance != this)
@@ -38,90 +42,95 @@ public class UnitSelectionManager : MonoBehaviour
     {
         camera = Camera.main;
         unitMovement = GetComponent<UnitMovement>();
+        view = GetComponent<PhotonView>();
     }
 
     void Update()
     {
-        if(Input.GetMouseButtonDown(0))
+        if(view.IsMine)
         {
-            RaycastHit hit;
-            Ray ray = camera.ScreenPointToRay(Input.mousePosition);
-
-            if(Physics.Raycast(ray, out hit, Mathf.Infinity, clickable))
+            if(Input.GetMouseButtonDown(0))
             {
-                // multi select unit by left shift
-                if(Input.GetKey(KeyCode.LeftShift))
-                {
-                    MuiltiSelect(hit.collider.gameObject);
-                }
+                RaycastHit hit;
+                Ray ray = camera.ScreenPointToRay(Input.mousePosition);
 
-                // just select unit by one click
+                if(Physics.Raycast(ray, out hit, Mathf.Infinity, clickable))
+                {
+                    // multi select unit by left shift
+                    if(Input.GetKey(KeyCode.LeftShift))
+                    {
+                        MuiltiSelect(hit.collider.gameObject);
+                    }
+
+                    // just select unit by one click
+                    else
+                    {
+                        SelectByClicking(hit.collider.gameObject);
+                    }
+                }
+                
+                // deselect unit, if you don't press left shift and don't click on unit
                 else
                 {
-                    SelectByClicking(hit.collider.gameObject);
-                }
-            }
-            
-            // deselect unit, if you don't press left shift and don't click on unit
-            else
-            {
-                if(Input.GetKey(KeyCode.LeftShift) == false)
-                {
-                    DeselectAll();
-                }
-            }
-        }
-
-
-        // Marker
-        if(Input.GetMouseButtonDown(1) && unitsSelected.Count > 0)
-        {
-            RaycastHit hit;
-            Ray ray = camera.ScreenPointToRay(Input.mousePosition);
-
-            if(Physics.Raycast(ray, out hit, Mathf.Infinity, ground))
-            {
-                groundMarker.transform.position = hit.point;
-
-                groundMarker.SetActive(false);
-                groundMarker.SetActive(true);
-            }
-        }
-
-        // Attack Target
-
-        if(unitsSelected.Count > 0 && AtleastOneOffensiveUnit(unitsSelected))
-        {
-            RaycastHit hit;
-            Ray ray = camera.ScreenPointToRay(Input.mousePosition);
-
-            if(Physics.Raycast(ray, out hit, Mathf.Infinity, attackable))
-            {
-                Debug.Log("Enemy hovered with mouse");
-
-                attackCursorVisible = true;
-                
-                if(Input.GetMouseButtonDown(1))
-                {
-                    Transform target = hit.transform;
-
-                    foreach(GameObject unit in unitsSelected)
+                    if(Input.GetKey(KeyCode.LeftShift) == false)
                     {
-                        if(unit.GetComponent<AttackController>())
+                        DeselectAll();
+                    }
+                }
+            }
+
+
+            // Marker
+            if(Input.GetMouseButtonDown(1) && unitsSelected.Count > 0)
+            {
+                RaycastHit hit;
+                Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+
+                if(Physics.Raycast(ray, out hit, Mathf.Infinity, ground))
+                {
+                    groundMarker.transform.position = hit.point;
+
+                    groundMarker.SetActive(false);
+                    groundMarker.SetActive(true);
+                }
+            }
+
+            // Attack Target
+
+            if(unitsSelected.Count > 0 && AtleastOneOffensiveUnit(unitsSelected))
+            {
+                RaycastHit hit;
+                Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+
+                if(Physics.Raycast(ray, out hit, Mathf.Infinity, attackable))
+                {
+                    Debug.Log("Enemy hovered with mouse");
+
+                    attackCursorVisible = true;
+                    
+                    if(Input.GetMouseButtonDown(1))
+                    {
+                        Transform target = hit.transform;
+
+                        foreach(GameObject unit in unitsSelected)
                         {
-                            unit.GetComponent<AttackController>().targetToAttack = target;
+                            if(unit.GetComponent<AttackController>())
+                            {
+                                unit.GetComponent<AttackController>().targetToAttack = target;
+                            }
                         }
                     }
                 }
             }
-        }
 
-        else
-        {
-            attackCursorVisible = true;
-        }
+            else
+            {
+                attackCursorVisible = true;
+            }
 
-        CursorSelector();
+            CursorSelector();
+        }
+        
     }
 
     private void CursorSelector()
