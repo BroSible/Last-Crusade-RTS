@@ -1,8 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using UnityEngine.UI;
 using Mono.Data.Sqlite;
 
 public class SwapDbEdit : MonoBehaviour
@@ -13,14 +11,19 @@ public class SwapDbEdit : MonoBehaviour
     public GameObject gameStatsDb;
     public GameObject buildingsDb;
 
-    [SerializeField] private TMP_Text inspectorText;         // Текстовое поле для отображения данных базы
-    private string dbNameUnit = "URI=file:Units.db";  // Название базы данных юнитов
-    private string dbNameUsers = "URI=file:Users.db";  // Название базы данных пользователей
-    private string dbNameFactions = "URI=file:Factions.db";  // Название базы данных фракций
-    private string dbNameGameStats = "URI=file:GameStats.db";  // Название базы данных игровых статистик
-    private string dbNameBuildings = "URI=file:Buildings.db";  // Название базы данных зданий
+    [SerializeField] private TMP_Text inspectorText;
+    [SerializeField] private TMP_Dropdown unitIdDropdown;
+    [SerializeField] private TMP_Dropdown userIdDropdown;
+    [SerializeField] private TMP_Dropdown factionIdDropdown;
+    [SerializeField] private TMP_Dropdown gameStatsIdDropdown;
+    [SerializeField] private TMP_Dropdown buildingIdDropdown;
 
-    // Методы для переключения между базами данных
+    private string dbNameUnit = "URI=file:Units.db";
+    private string dbNameUsers = "URI=file:Users.db";
+    private string dbNameFactions = "URI=file:Factions.db";
+    private string dbNameGameStats = "URI=file:GameStats.db";
+    private string dbNameBuildings = "URI=file:Buildings.db";
+
     public void unitDbEnable()
     {
         unitDb.SetActive(true);
@@ -29,6 +32,7 @@ public class SwapDbEdit : MonoBehaviour
         gameStatsDb.SetActive(false);
         buildingsDb.SetActive(false);
         LoadUnitData();
+        LoadIdsToDropdown(dbNameUnit, "units", unitIdDropdown);
     }
 
     public void usersDbEnable()
@@ -39,6 +43,7 @@ public class SwapDbEdit : MonoBehaviour
         gameStatsDb.SetActive(false);
         buildingsDb.SetActive(false);
         LoadUserData();
+        LoadIdsToDropdown(dbNameUsers, "users", userIdDropdown);
     }
 
     public void factionsDbEnable()
@@ -49,6 +54,7 @@ public class SwapDbEdit : MonoBehaviour
         gameStatsDb.SetActive(false);
         buildingsDb.SetActive(false);
         LoadFactionsData();
+        LoadIdsToDropdown(dbNameFactions, "factions", factionIdDropdown);
     }
 
     public void gameStatsDbEnable()
@@ -59,6 +65,7 @@ public class SwapDbEdit : MonoBehaviour
         gameStatsDb.SetActive(true);
         buildingsDb.SetActive(false);
         LoadGameStatsData();
+        LoadIdsToDropdown(dbNameGameStats, "GameStatistics", gameStatsIdDropdown);
     }
 
     public void buildingsDbEnable()
@@ -69,9 +76,31 @@ public class SwapDbEdit : MonoBehaviour
         gameStatsDb.SetActive(false);
         buildingsDb.SetActive(true);
         LoadBuildingData();
+        LoadIdsToDropdown(dbNameBuildings, "ObjectData", buildingIdDropdown);
     }
 
-    // Метод для подгрузки данных юнитов из базы данных
+    private void LoadIdsToDropdown(string dbName, string tableName, TMP_Dropdown dropdown)
+    {
+        List<string> ids = new List<string>();
+        using (var connection = new SqliteConnection(dbName))
+        {
+            connection.Open();
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = $"SELECT id FROM {tableName};";
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        ids.Add(reader["id"].ToString());
+                    }
+                }
+            }
+        }
+        dropdown.ClearOptions();
+        dropdown.AddOptions(ids);
+    }
+
     private void LoadUnitData()
     {
         using (var connection = new SqliteConnection(dbNameUnit))
@@ -82,48 +111,55 @@ public class SwapDbEdit : MonoBehaviour
                 command.CommandText = "SELECT * FROM units;";
                 using (var reader = command.ExecuteReader())
                 {
-                    string data = "";
-                    data += $"<mspace=0.7em><b>| ID  | Имя        | Здоровье | Урон  | Скорость | Дист. Атаки | Стоп Атака |</b>\n";
-                    data += $"<b>|-----|------------|----------|-------|----------|-------------|------------|</b>\n";
+                    string data = "<mspace=0.7em><b>| ID  | Имя        | Здоровье | Урон  | Скорость | Дист. Атаки | Стоп Атака |</b>\n";
+                    data += "<b>|-----|------------|----------|-------|----------|-------------|------------|</b>\n";
 
                     while (reader.Read())
                     {
                         data += $"| {reader["id"],-3} | {reader["name"],-10} | {reader["maxHealth"],8} | {reader["unitDamage"],5} | {reader["speedUnit"],8} | {reader["attackingDistance"],11:F1} | {reader["stopAttackingDistance"],10:F1} |\n";
                     }
                     data += "</mspace>";
-                    inspectorText.text = data;  // Показываем таблицу данных в текстовом поле
+                    inspectorText.text = data;
                 }
             }
         }
     }
 
-    // Метод для подгрузки данных пользователей из базы данных
-    private void LoadUserData()
+private void LoadUserData()
+{
+    using (var connection = new SqliteConnection(dbNameUsers))
     {
-        using (var connection = new SqliteConnection(dbNameUsers))
+        connection.Open();
+        using (var command = connection.CreateCommand())
         {
-            connection.Open();
-            using (var command = connection.CreateCommand())
+            command.CommandText = "SELECT * FROM users;";
+            using (var reader = command.ExecuteReader())
             {
-                command.CommandText = "SELECT * FROM users;";
-                using (var reader = command.ExecuteReader())
-                {
-                    string data = "";
-                    data += $"<mspace=0.7em><b>| ID  | Username   | Password  |</b>\n";
-                    data += $"<b>|-----|------------|-----------|</b>\n";
+                string data = "<mspace=0.7em><b>| ID  | Username   | Password   |</b>\n";
+                data += "<b>|-----|------------|------------|</b>\n";
 
-                    while (reader.Read())
-                    {
-                        data += $"| {reader["id"],-3} | {reader["username"],-10} | {reader["password"],-9} |\n";
-                    }
-                    data += "</mspace>";
-                    inspectorText.text = data;  // Показываем таблицу данных в текстовом поле
+                // Проверка наличия столбцов
+                int idIndex = reader.GetOrdinal("id");
+                int usernameIndex = reader.GetOrdinal("username");
+                int passwordIndex = reader.GetOrdinal("password");
+
+                while (reader.Read())
+                {
+                    // Используем индексы столбцов для извлечения значений
+                    string id = reader.IsDBNull(idIndex) ? "N/A" : reader.GetString(idIndex);
+                    string username = reader.IsDBNull(usernameIndex) ? "N/A" : reader.GetString(usernameIndex);
+                    string password = reader.IsDBNull(passwordIndex) ? "N/A" : reader.GetString(passwordIndex);
+
+                    data += $"| {id,-3} | {username,-10} | {password,-10} |\n";
                 }
+                data += "</mspace>";
+                inspectorText.text = data;
             }
         }
     }
+}
 
-    // Метод для подгрузки данных фракций из базы данных
+
     private void LoadFactionsData()
     {
         using (var connection = new SqliteConnection(dbNameFactions))
@@ -134,22 +170,20 @@ public class SwapDbEdit : MonoBehaviour
                 command.CommandText = "SELECT * FROM factions;";
                 using (var reader = command.ExecuteReader())
                 {
-                    string data = "";
-                    data += $"<mspace=0.7em><b>| ID  | Название    | Описание    |</b>\n";
-                    data += $"<b>|-----|------------|-------------|</b>\n";
+                    string data = "<mspace=0.7em><b>| ID  | Название   | Описание             |</b>\n";
+                    data += "<b>|-----|------------|---------------------|</b>\n";
 
                     while (reader.Read())
                     {
-                        data += $"| {reader["id"],-3} | {reader["name"],-10} | {reader["description"],-15} |\n";
+                        data += $"| {reader["id"],-3} | {reader["name"],-10} | {reader["description"],-19} |\n";
                     }
                     data += "</mspace>";
-                    inspectorText.text = data;  // Показываем таблицу данных в текстовом поле
+                    inspectorText.text = data;
                 }
             }
         }
     }
 
-    // Метод для подгрузки данных игровых статистик из базы данных
     private void LoadGameStatsData()
     {
         using (var connection = new SqliteConnection(dbNameGameStats))
@@ -157,25 +191,43 @@ public class SwapDbEdit : MonoBehaviour
             connection.Open();
             using (var command = connection.CreateCommand())
             {
-                command.CommandText = "SELECT * FROM game_stats;";
+                // Запрос на выборку всех данных из таблицы GameStatistics
+                command.CommandText = "SELECT * FROM GameStatistics;";
+
                 using (var reader = command.ExecuteReader())
                 {
-                    string data = "";
-                    data += $"<mspace=0.7em><b>| ID  | Статистика | Значение   |</b>\n";
-                    data += $"<b>|-----|------------|------------|</b>\n";
+                    // Проверка на наличие столбцов и их индексы
+                    int idIndex = reader.GetOrdinal("id");
+                    int unitCountIndex = reader.GetOrdinal("unitCount");
+                    int buildingCountIndex = reader.GetOrdinal("buildingCount");
+                    int timestampIndex = reader.GetOrdinal("timestamp");
 
+                    string data = "<mspace=0.7em><b>| ID  | UnitCount | BuildingCount | Timestamp           |</b>\n";
+                    data += "<b>|-----|-----------|---------------|---------------------|</b>\n";
+
+                    // Чтение строк из базы данных
                     while (reader.Read())
                     {
-                        data += $"| {reader["id"],-3} | {reader["stat_name"],-12} | {reader["value"],-9} |\n";
+                        // Извлечение данных из каждого столбца
+                        string id = reader.IsDBNull(idIndex) ? "N/A" : reader.GetInt32(idIndex).ToString();
+                        string unitCount = reader.IsDBNull(unitCountIndex) ? "N/A" : reader.GetInt32(unitCountIndex).ToString();
+                        string buildingCount = reader.IsDBNull(buildingCountIndex) ? "N/A" : reader.GetInt32(buildingCountIndex).ToString();
+                        string timestamp = reader.IsDBNull(timestampIndex) ? "N/A" : reader.GetString(timestampIndex);
+
+                        // Форматирование строки для отображения
+                        data += $"| {id,-3} | {unitCount,-9} | {buildingCount,-13} | {timestamp,-19} |\n";
                     }
+
                     data += "</mspace>";
-                    inspectorText.text = data;  // Показываем таблицу данных в текстовом поле
+                    inspectorText.text = data;  // Отображение данных в UI
                 }
             }
         }
     }
 
-    // Метод для подгрузки данных зданий из базы данных
+
+
+
     private void LoadBuildingData()
     {
         using (var connection = new SqliteConnection(dbNameBuildings))
@@ -183,21 +235,50 @@ public class SwapDbEdit : MonoBehaviour
             connection.Open();
             using (var command = connection.CreateCommand())
             {
+                // Запрос на выборку всех данных из таблицы ObjectData
                 command.CommandText = "SELECT * FROM ObjectData;";
+
                 using (var reader = command.ExecuteReader())
                 {
-                    string data = "";
-                    data += $"<mspace=0.7em><b>| ID  | Name       | Description   | SizeX | SizeY | Cost |</b>\n";
-                    data += $"<b>|-----|------------|---------------|-------|-------|------|</b>\n";
+                    // Получаем индексы столбцов для каждой строки
+                    int idIndex = reader.GetOrdinal("ID");
+                    int nameIndex = reader.GetOrdinal("Name");
+                    int descriptionIndex = reader.GetOrdinal("Description");
+                    int sizeXIndex = reader.GetOrdinal("SizeX");
+                    int sizeYIndex = reader.GetOrdinal("SizeY");
+                    int costIndex = reader.GetOrdinal("Cost");
 
+                    // Если хотя бы один из столбцов не найден, выводим ошибку
+                    if (idIndex == -1 || nameIndex == -1 || sizeXIndex == -1 || sizeYIndex == -1 || costIndex == -1)
+                    {
+                        Debug.LogError("One or more required columns are missing in the database.");
+                        return;
+                    }
+
+                    // Переменная для отображения данных в UI
+                    string data = "<mspace=0.7em><b>| ID  | Name       | Description    | SizeX | SizeY | Cost |</b>\n";
+                    data += "<b>|-----|------------|----------------|-------|-------|------|</b>\n";
+
+                    // Чтение строк из базы данных
                     while (reader.Read())
                     {
-                        data += $"| {reader["ID"],-3} | {reader["Name"],-10} | {reader["Description"],-15} | {reader["SizeX"],5} | {reader["SizeY"],5} | {reader["Cost"],5} |\n";
+                        // Извлечение данных с проверкой на DBNull
+                        string id = reader.IsDBNull(idIndex) ? "N/A" : reader.GetInt32(idIndex).ToString();
+                        string name = reader.IsDBNull(nameIndex) ? "N/A" : reader.GetString(nameIndex);
+                        string description = reader.IsDBNull(descriptionIndex) ? "N/A" : reader.GetString(descriptionIndex);
+                        string sizeX = reader.IsDBNull(sizeXIndex) ? "N/A" : reader.GetInt32(sizeXIndex).ToString();
+                        string sizeY = reader.IsDBNull(sizeYIndex) ? "N/A" : reader.GetInt32(sizeYIndex).ToString();
+                        string cost = reader.IsDBNull(costIndex) ? "N/A" : reader.GetInt32(costIndex).ToString();
+
+                        // Форматирование строки для отображения
+                        data += $"| {id,-3} | {name,-10} | {description,-15} | {sizeX,-5} | {sizeY,-5} | {cost,-4} |\n";
                     }
+
                     data += "</mspace>";
-                    inspectorText.text = data;  // Показываем таблицу данных в текстовом поле
+                    inspectorText.text = data;
                 }
             }
         }
     }
+
 }

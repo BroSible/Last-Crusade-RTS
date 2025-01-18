@@ -1,79 +1,91 @@
-using System.Collections.Generic;
-using System.Data;
+using System;
 using Mono.Data.Sqlite;
-using System.IO;
 using UnityEngine;
 
 public class DatabaseBuilding : MonoBehaviour
 {
-    private string dbPath;
+    private string dbName = "URI=file:Buildings.db";
 
     public ObjectsDatabseSO objectsDatabase;
 
-    private void Awake()
+    private void Start()
     {
-        dbPath = Path.Combine(Application.dataPath, "Buildings.db");
-        CreateDatabase();
-        InsertObjectsData();
+        CreateTable();
+        InsertObjectsIfNotExists();
+        Debug.Log("Building Database setup completed.");
     }
 
-    private void CreateDatabase()
+    // Создание таблицы для зданий
+    private void CreateTable()
     {
-        using (var connection = new SqliteConnection("URI=file:" + dbPath))
+        using (var connection = new SqliteConnection(dbName))
         {
             connection.Open();
-
             using (var command = connection.CreateCommand())
             {
                 command.CommandText = @"
-                    CREATE TABLE IF NOT EXISTS ObjectData (
-                        ID INTEGER PRIMARY KEY,
-                        Name TEXT,
-                        Description TEXT,
-                        SizeX INTEGER,
-                        SizeY INTEGER,
-                        Cost INTEGER
-                    );
-                ";
+                CREATE TABLE IF NOT EXISTS ObjectData (
+                    ID INTEGER PRIMARY KEY,
+                    Name TEXT NOT NULL UNIQUE,
+                    Description TEXT,
+                    SizeX INTEGER,
+                    SizeY INTEGER,
+                    Cost INTEGER
+                );";
                 command.ExecuteNonQuery();
             }
-            connection.Close();
         }
     }
 
-    private void InsertObjectsData()
+    // Вставка объектов, если их нет в БД
+    private void InsertObjectsIfNotExists()
     {
-        using (var connection = new SqliteConnection("URI=file:" + dbPath))
+        foreach (var obj in objectsDatabase.objectsData)
         {
-            connection.Open();
-
-            foreach (var obj in objectsDatabase.objectsData)
+            int totalCost = 0;
+            foreach (var req in obj.requirements)
             {
-                int totalCost = 0;
-                foreach (var req in obj.requirements)
-                {
-                    totalCost += req.amount;
-                }
-
-                Debug.Log($"Inserting Object: ID={obj.ID}, Name={obj.Name}, SizeX={obj.Size.x}, SizeY={obj.Size.y}, Cost={totalCost}");
-
-                using (var command = connection.CreateCommand())
-                {
-                    command.CommandText = @"
-                        INSERT OR REPLACE INTO ObjectData (ID, Name, Description, SizeX, SizeY, Cost)
-                        VALUES (@ID, @Name, @Description, @SizeX, @SizeY, @Cost);
-                    ";
-                    command.Parameters.Add(new SqliteParameter("@ID", obj.ID));
-                    command.Parameters.Add(new SqliteParameter("@Name", obj.Name));
-                    command.Parameters.Add(new SqliteParameter("@Description", obj.description));
-                    command.Parameters.Add(new SqliteParameter("@SizeX", obj.Size.x));
-                    command.Parameters.Add(new SqliteParameter("@SizeY", obj.Size.y));
-                    command.Parameters.Add(new SqliteParameter("@Cost", totalCost));
-                    command.ExecuteNonQuery();
-                }
+                totalCost += req.amount;
             }
 
-            connection.Close();
+            InsertObjectIfNotExists(obj.ID, obj.Name, obj.description, obj.Size.x, obj.Size.y, totalCost);
+        }
+    }
+
+    // Добавление объекта в БД при отсутствии
+    private void InsertObjectIfNotExists(int id, string name, string description, int sizeX, int sizeY, int cost)
+    {
+        using (var connection = new SqliteConnection(dbName))
+        {
+            connection.Open();
+            using (var command = connection.CreateCommand())
+            {
+                // Проверка существования объекта
+                command.CommandText = "SELECT COUNT(*) FROM ObjectData WHERE Name = @name;";
+                command.Parameters.AddWithValue("@name", name);
+
+                long count = (long)command.ExecuteScalar();
+
+                // Если объекта нет, добавляем его
+                if (count == 0)
+                {
+                    command.CommandText = @"
+                        INSERT INTO ObjectData (ID, Name, Description, SizeX, SizeY, Cost)
+                        VALUES (@id, @name, @description, @sizeX, @sizeY, @cost);";
+                    command.Parameters.AddWithValue("@id", id);
+                    command.Parameters.AddWithValue("@description", description);
+                    command.Parameters.AddWithValue("@sizeX", sizeX);
+                    command.Parameters.AddWithValue("@sizeY", sizeY);
+                    command.Parameters.AddWithValue("@cost", cost);
+
+                    command.ExecuteNonQuery();
+                    Debug.Log($"Объект \"{name}\" добавлен в базу данных.");
+                }
+                else
+                {
+                    Debug.Log($"Объект \"{name}\" уже существует в базе данных.");
+                }
+            }
         }
     }
 }

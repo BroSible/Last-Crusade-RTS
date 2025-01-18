@@ -25,7 +25,7 @@ MonoBehaviour:
     <benefits>k__BackingField: []
   - <Name>k__BackingField: Barracks
     <ID>k__BackingField: 1
-    description: Can Create a Units
+    description: 
     <Size>k__BackingField: {x: 35, y: 35}
     <Prefab>k__BackingField: {fileID: 1100020323477387243, guid: 81775bdf0dd478b42b8ab8e9755e83b2,
       type: 3}
@@ -35,7 +35,7 @@ MonoBehaviour:
     <benefits>k__BackingField: []
   - <Name>k__BackingField: Peasant
     <ID>k__BackingField: 2
-    description: Weak unit, but very cheap
+    description: Weak unit
     <Size>k__BackingField: {x: 3, y: 3}
     <Prefab>k__BackingField: {fileID: 4561353814361610027, guid: 685b06af411380a439674c6e25fa364e,
       type: 3}
@@ -45,7 +45,7 @@ MonoBehaviour:
     <benefits>k__BackingField: []
   - <Name>k__BackingField: Mine
     <ID>k__BackingField: 3
-    description: Get gold per second
+    description: Get gold
     <Size>k__BackingField: {x: 24, y: 24}
     <Prefab>k__BackingField: {fileID: 7972764168776864974, guid: 81a818977fc1b2c49a67804af08ddc04,
       type: 3}
@@ -55,7 +55,7 @@ MonoBehaviour:
     <benefits>k__BackingField: []
   - <Name>k__BackingField: Crusader
     <ID>k__BackingField: 4
-    description: Strong Warrior
+    description: Strong
     <Size>k__BackingField: {x: 3, y: 3}
     <Prefab>k__BackingField: {fileID: 423038528437648896, guid: 44f1a2593c689a649b7ffeb082d14101,
       type: 3}
@@ -65,7 +65,7 @@ MonoBehaviour:
     <benefits>k__BackingField: []
   - <Name>k__BackingField: MainBase
     <ID>k__BackingField: 5
-    description: The main base, if it gets destroyed, you lose.
+    description: 
     <Size>k__BackingField: {x: 50, y: 50}
     <Prefab>k__BackingField: {fileID: 423038528437648896, guid: 44f1a2593c689a649b7ffeb082d14101,
       type: 3}

@@ -2,9 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Data;
 using Mono.Data.Sqlite;
-using UnityEngine.Analytics;
-using System;
 using UnityEngine.SceneManagement;
+using System;
 using System.Text.RegularExpressions;
 
 public class Registration : MonoBehaviour
@@ -31,7 +30,6 @@ public class Registration : MonoBehaviour
     private bool ValidateUsername(string username)
     {
         Regex regex = new Regex("^[A-Z][a-z0-9]{2,}$");
-
         return regex.IsMatch(username);
     }
 
@@ -42,7 +40,7 @@ public class Registration : MonoBehaviour
             connection.Open();
             using (var command = connection.CreateCommand())
             {
-                command.CommandText = "CREATE TABLE IF NOT EXISTS users (username VARCHAR(20), password VARCHAR(20));";
+                command.CommandText = "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username VARCHAR(20), password VARCHAR(20));";
                 command.ExecuteNonQuery();
             }
             connection.Close();
@@ -56,7 +54,7 @@ public class Registration : MonoBehaviour
         string doublePas = doublePas1.text;
         if (string.IsNullOrEmpty(doublePas))
         {
-            errorText.text = "CONFRIM YOUR PASSWORD";
+            errorText.text = "CONFIRM YOUR PASSWORD";
         }
         else if (doublePas == password)
         {
@@ -64,7 +62,7 @@ public class Registration : MonoBehaviour
         }
         else
         {
-            errorText.text = "You are input the wrong password";
+            errorText.text = "You entered the wrong password";
         }
     }
 
@@ -75,7 +73,7 @@ public class Registration : MonoBehaviour
 
         if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
         {
-            errorText.text = "INPUT SOME";
+            errorText.text = "Please fill in all fields";
             return;
         }
 
@@ -86,7 +84,7 @@ public class Registration : MonoBehaviour
                 connection.Open();
                 using (var command = connection.CreateCommand())
                 {
-                   command.CommandText = "SELECT * FROM users WHERE username = @username AND password = @password";
+                    command.CommandText = "SELECT * FROM users WHERE username = @username AND password = @password";
                     command.Parameters.AddWithValue("@username", username);
                     command.Parameters.AddWithValue("@password", password);
 
@@ -94,7 +92,7 @@ public class Registration : MonoBehaviour
                     {
                         if (reader.Read())
                         {
-                            errorText.text = "Your welcome";
+                            errorText.text = "Welcome!";
                             Debug.Log("Login successful");
                             Enter = true;
                             SceneManager.LoadScene("LoadingScene");
@@ -104,7 +102,7 @@ public class Registration : MonoBehaviour
                             errorText.text = "Invalid username or password";
                             Debug.Log("Login failed");
                         }
-                         reader.Close();
+                        reader.Close();
                     }
                 }
             }
@@ -120,8 +118,7 @@ public class Registration : MonoBehaviour
         }
     }
 
-
- public void Register()
+    public void Register()
     {
         string username = usernameField.text;
         string password = passwordField.text;
@@ -145,7 +142,6 @@ public class Registration : MonoBehaviour
             return;
         }
 
-
         if (password != confirmPassword)
         {
             errorText.text = "Passwords do not match";
@@ -154,7 +150,7 @@ public class Registration : MonoBehaviour
 
         using (var connection = new SqliteConnection(dbName))
         {
-             try
+            try
             {
                 connection.Open();
                 using (var command = connection.CreateCommand())
@@ -168,24 +164,23 @@ public class Registration : MonoBehaviour
                     {
                         errorText.text = "User already exists";
                         Debug.Log("User already exists");
-                         return;
+                        return;
                     }
-                   
-                  command.CommandText = "INSERT INTO users (username, password) VALUES (@username, @password)";
-                    command.Parameters.AddWithValue("@username", username);
-                     command.Parameters.AddWithValue("@password", password);
+
+                    command.CommandText = "INSERT INTO users (username, password) VALUES (@username, @password)";
+                    command.Parameters.AddWithValue("@password", password);
                     command.ExecuteNonQuery();
-                 
+
                     errorText.text = "Registration successful!";
-                   SceneManager.LoadScene("LoadingScene");
+                    SceneManager.LoadScene("LoadingScene");
                 }
             }
-             catch(Exception ex)
+            catch (Exception ex)
             {
                 Debug.LogError($"Error during registration: {ex.Message}");
-                errorText.text = "Registration failed. Please try again later.";
+                errorText.text = "Registration failed. Please try again.";
             }
-              finally
+            finally
             {
                 connection.Close();
             }
