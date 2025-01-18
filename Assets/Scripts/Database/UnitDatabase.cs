@@ -11,7 +11,7 @@ public class UnitDatabase : MonoBehaviour
     private void Start()
     {
         CreateTable();
-        InsertUnitsIfNotExists();
+        ResetAndInsertUnits();
         Debug.Log("Unit Database load completed.");
     }
 
@@ -39,45 +39,42 @@ public class UnitDatabase : MonoBehaviour
         }
     }
 
-    // Вставка юнитов только если их нет в базе
-    private void InsertUnitsIfNotExists()
+    // Удаление всех существующих данных и вставка новых
+    private void ResetAndInsertUnits()
     {
         using (var connection = new SqliteConnection(dbName))
         {
             connection.Open();
             using (var command = connection.CreateCommand())
             {
+                // Удаляем все данные из таблицы
+                command.CommandText = "DELETE FROM units;";
+                command.ExecuteNonQuery();
+                Debug.Log("Все юниты были удалены из базы данных.");
+
+                // Сброс автоинкремента для id
+                command.CommandText = "UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE NAME='units';";
+                command.ExecuteNonQuery();
+                Debug.Log("Счетчик автоинкремента был сброшен.");
+
+                // Вставка новых юнитов
                 foreach (var unit in unitDatabaseSO.units)
                 {
-                    // Проверка существования юнита по имени
-                    command.CommandText = "SELECT COUNT(*) FROM units WHERE name = @name;";
+                    command.CommandText = @"
+                    INSERT INTO units (name, description, maxHealth, unitDamage, speedUnit, attackingDistance, stopAttackingDistance) 
+                    VALUES (@name, @description, @maxHealth, @unitDamage, @speedUnit, @attackingDistance, @stopAttackingDistance);";
+
                     command.Parameters.Clear();
                     command.Parameters.AddWithValue("@name", unit.Name);
+                    command.Parameters.AddWithValue("@description", unit.description);
+                    command.Parameters.AddWithValue("@maxHealth", unit.maxHealth);
+                    command.Parameters.AddWithValue("@unitDamage", unit.unitDamage);
+                    command.Parameters.AddWithValue("@speedUnit", unit.speedUnit);
+                    command.Parameters.AddWithValue("@attackingDistance", unit.attackingDistance);
+                    command.Parameters.AddWithValue("@stopAttackingDistance", unit.stopAttackingDistance);
 
-                    long count = (long)command.ExecuteScalar();
-
-                    // Вставка юнита, если его нет в БД
-                    if (count == 0)
-                    {
-                        command.CommandText = @"
-                        INSERT INTO units (name, description, maxHealth, unitDamage, speedUnit, attackingDistance, stopAttackingDistance) 
-                        VALUES (@name, @description, @maxHealth, @unitDamage, @speedUnit, @attackingDistance, @stopAttackingDistance);";
-
-                        command.Parameters.AddWithValue("@description", unit.description);
-                        command.Parameters.AddWithValue("@maxHealth", unit.maxHealth);
-                        command.Parameters.AddWithValue("@unitDamage", unit.unitDamage);
-                        command.Parameters.AddWithValue("@speedUnit", unit.speedUnit);
-                        command.Parameters.AddWithValue("@attackingDistance", unit.attackingDistance);
-                        command.Parameters.AddWithValue("@stopAttackingDistance", unit.stopAttackingDistance);
-
-                        command.ExecuteNonQuery();
-
-                        Debug.Log($"Юнит \"{unit.Name}\" добавлен в базу данных.");
-                    }
-                    else
-                    {
-                        Debug.Log($"Юнит \"{unit.Name}\" уже существует в базе данных.");
-                    }
+                    command.ExecuteNonQuery();
+                    Debug.Log($"Юнит \"{unit.Name}\" добавлен в базу данных.");
                 }
             }
         }

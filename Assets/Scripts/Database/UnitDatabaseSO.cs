@@ -13,7 +13,9 @@ public class UnitDatabaseSO : ScriptableObject
 public class UnitData
 {
     [field: SerializeField]
-    public string Name { get; private set; }
+    public int ID;
+    [field: SerializeField]
+    public string Name { get;  set; }
 
     [field: SerializeField]
 

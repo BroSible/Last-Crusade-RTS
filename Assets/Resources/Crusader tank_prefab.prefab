@@ -722,6 +722,8 @@ MonoBehaviour:
   unitMaxHealth: 120
   isDead: 0
   healthTracker: {fileID: 8986464247369757950}
+  id: 2
+  unitDatabase: {fileID: 11400000, guid: 1c24382730c042b489f7928e1781b306, type: 2}
 --- !u!114 &272183447048227214
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -736,6 +738,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetToAttack: {fileID: 0}
   unitDamage: 12
+  unitDatabase: {fileID: 11400000, guid: 1c24382730c042b489f7928e1781b306, type: 2}
+  id: 1
 --- !u!114 &7555532518034941819
 MonoBehaviour:
   m_ObjectHideFlags: 0

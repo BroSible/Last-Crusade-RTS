@@ -3,19 +3,47 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-
 public class UnitFollowState : StateMachineBehaviour
 {
     AttackController attackController;
     NavMeshAgent agent;
+
+    // Будет извлечен из базы данных
     public float attackingDistance;
+
     public float rotationSpeed = 5.0f;
+
+    // Ссылка на базу данных юнитов
+    [SerializeField] private UnitDatabaseSO unitDatabase;
+
+    public int unitIndex;  // Индекс юнита для поиска в базе данных
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         attackController = animator.transform.GetComponent<AttackController>();
         agent = animator.transform.GetComponent<NavMeshAgent>();
+
+        // Проверяем, есть ли база данных и если в ней есть юниты
+        if (unitDatabase != null && unitDatabase.units.Count > 0)
+        {
+            // Проверяем, если индекс в пределах допустимого диапазона
+            if (unitIndex >= 0 && unitIndex < unitDatabase.units.Count)
+            {
+                // Извлекаем юнита по индексу
+                UnitData unitData = unitDatabase.units[unitIndex];
+                attackingDistance = unitData.attackingDistance;  // Извлекаем attackingDistance из базы данных
+                Debug.Log($"Found unit at index {unitIndex} with attackingDistance: {attackingDistance}");
+            }
+            else
+            {
+                Debug.LogWarning($"Invalid unit index: {unitIndex}. The index is out of bounds.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("UnitDatabase is not assigned or empty.");
+        }
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -59,5 +87,4 @@ public class UnitFollowState : StateMachineBehaviour
             }
         }
     }
-
 }

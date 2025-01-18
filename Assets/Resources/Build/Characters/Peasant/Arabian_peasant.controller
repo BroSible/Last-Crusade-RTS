@@ -70,6 +70,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackingDistance: 3
   rotationSpeed: 5
+  unitDatabase: {fileID: 11400000, guid: 1c24382730c042b489f7928e1781b306, type: 2}
+  unitIndex: 0
 --- !u!1102 &-6532791069387811794
 AnimatorState:
   serializedVersion: 6
@@ -235,6 +237,8 @@ MonoBehaviour:
   stopAttackingDistance: 3.2
   attackRate: 0.8
   attackTimer: 0
+  unitDatabase: {fileID: 11400000, guid: 1c24382730c042b489f7928e1781b306, type: 2}
+  unitIndex: 0
 --- !u!1101 &2604566015942118652
 AnimatorStateTransition:
   m_ObjectHideFlags: 1

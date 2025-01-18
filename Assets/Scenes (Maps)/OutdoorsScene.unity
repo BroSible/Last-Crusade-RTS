@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2271.8948, g: 2422.424, b: 3550.1372, a: 1}
+  m_IndirectSpecularColor: {r: 2272.6702, g: 2424.1506, b: 3554.4888, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1881,6 +1881,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetToAttack: {fileID: 0}
   unitDamage: 3
+  unitDatabase: {fileID: 0}
+  id: 0
 --- !u!114 &893478573
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1897,6 +1899,8 @@ MonoBehaviour:
   unitMaxHealth: 40
   isDead: 0
   healthTracker: {fileID: 1510312615}
+  id: 0
+  unitDatabase: {fileID: 0}
 --- !u!114 &893478574
 MonoBehaviour:
   m_ObjectHideFlags: 0

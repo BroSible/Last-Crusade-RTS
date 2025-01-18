@@ -16,18 +16,36 @@ public class Unit : MonoBehaviour, IDamageable
     NavMeshAgent agent;
     UnitMovement unitMovement;
     AttackController attackController;
+    public int id;
+
+    // Добавьте ссылку на базу данных юнитов
+    public UnitDatabaseSO unitDatabase;
 
     void Start()
     {
-        UnitSelectionManager.Instance.allUnitsList.Add(gameObject);
-
-        unitHealth = unitMaxHealth;
-        UpdateHealthUI();
-
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         unitMovement = GetComponent<UnitMovement>();
         boxCollider = GetComponent<BoxCollider>();
+        
+        // Проверяем, есть ли база данных и если в ней есть юниты
+        if (unitDatabase != null && unitDatabase.units.Count > 0)
+        {
+            // Получаем первый юнит из списка и присваиваем его максимальное здоровье
+            UnitData Unit = unitDatabase.units[id];
+            unitMaxHealth = Unit.maxHealth;
+            agent.speed = Unit.speedUnit;
+        }
+
+        else
+        {
+            Debug.LogWarning("UnitDatabase is not assigned or empty.");
+        }
+
+        unitHealth = unitMaxHealth;
+        UpdateHealthUI();
+
+
     }
 
     private void Update()
@@ -39,14 +57,12 @@ public class Unit : MonoBehaviour, IDamageable
             {
                 animator.SetBool("isFollow", true);
             }
-
             else
             {
                 unitMovement.isCommandedToMove = false;
                 animator.SetBool("isFollow", false);
             }
         }
-        
     }
 
     void OnDestroy()
@@ -60,14 +76,12 @@ public class Unit : MonoBehaviour, IDamageable
 
         if(unitHealth <= 0)
         {
-            animator.SetBool("isDead",true);
+            animator.SetBool("isDead", true);
             Destroy(boxCollider);
             Destroy(sphereCollider);
             isDead = true;
             unitMovement.enabled = false;
             agent.enabled = false;
-            //gameObject.layer = 0;
-            //gameObject.tag = "Untagged";
             StartCoroutine(deathCoroutine());
         }
     }
@@ -82,6 +96,5 @@ public class Unit : MonoBehaviour, IDamageable
     {
         yield return new WaitForSeconds(2f);
         Destroy(gameObject);
-
     }
 }

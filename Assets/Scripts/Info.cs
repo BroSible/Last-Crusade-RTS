@@ -8,6 +8,7 @@ public class Info : MonoBehaviour
 {
     [Header("UI Elements")]
     public GameObject factionPanel;      // Панель на Canvas
+    public GameObject adminPanel;
     public TMP_Text factionText;         // Текстовый компонент для отображения данных
 
     private string dbName = "URI=file:Factions.db";
@@ -42,9 +43,19 @@ public class Info : MonoBehaviour
     }
 
     // Метод для скрытия панели
-    public void HidePanel()
+    public void HideFactionPanel()
     {
         factionPanel.SetActive(false);
+    }
+
+    public void HideAdminPanel()
+    {
+        adminPanel.SetActive(false);
+    }
+
+    public void EnableAdminPanel()
+    {
+        adminPanel.SetActive(true);
     }
 
     // Загрузка фракций из БД
@@ -72,4 +83,6 @@ public class Info : MonoBehaviour
 
         return factionsList;
     }
+
+    
 }
