@@ -722,7 +722,7 @@ MonoBehaviour:
   unitMaxHealth: 120
   isDead: 0
   healthTracker: {fileID: 8986464247369757950}
-  id: 2
+  id: 1
   unitDatabase: {fileID: 11400000, guid: 1c24382730c042b489f7928e1781b306, type: 2}
 --- !u!114 &272183447048227214
 MonoBehaviour:

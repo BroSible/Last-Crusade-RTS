@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
 using Mono.Data.Sqlite;
 
 public class SwapDbEdit : MonoBehaviour
@@ -138,21 +139,16 @@ private void LoadUserData()
                 string data = "<mspace=0.7em><b>| ID  | Username   | Password   |</b>\n";
                 data += "<b>|-----|------------|------------|</b>\n";
 
-                // Проверка наличия столбцов
-                int idIndex = reader.GetOrdinal("id");
-                int usernameIndex = reader.GetOrdinal("username");
-                int passwordIndex = reader.GetOrdinal("password");
-
                 while (reader.Read())
                 {
-                    // Используем индексы столбцов для извлечения значений
-                    string id = reader.IsDBNull(idIndex) ? "N/A" : reader.GetString(idIndex);
-                    string username = reader.IsDBNull(usernameIndex) ? "N/A" : reader.GetString(usernameIndex);
-                    string password = reader.IsDBNull(passwordIndex) ? "N/A" : reader.GetString(passwordIndex);
+                    string id = reader["id"] != DBNull.Value ? reader["id"].ToString() : "N/A";
+                    string username = reader["username"] != DBNull.Value ? reader["username"].ToString() : "N/A";
+                    string password = reader["password"] != DBNull.Value ? reader["password"].ToString() : "N/A";
 
                     data += $"| {id,-3} | {username,-10} | {password,-10} |\n";
                 }
                 data += "</mspace>";
+
                 inspectorText.text = data;
             }
         }

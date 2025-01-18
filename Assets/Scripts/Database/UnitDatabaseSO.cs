@@ -13,7 +13,7 @@ public class UnitDatabaseSO : ScriptableObject
 public class UnitData
 {
     [field: SerializeField]
-    public int ID;
+    public int ID; // Передаётся в скрипты с параметрами (индекс List<UnitData> units)
     [field: SerializeField]
     public string Name { get;  set; }
 

@@ -29,18 +29,13 @@ public class Unit : MonoBehaviour, IDamageable
         boxCollider = GetComponent<BoxCollider>();
         
         // Проверяем, есть ли база данных и если в ней есть юниты
-        if (unitDatabase != null && unitDatabase.units.Count > 0)
-        {
-            // Получаем первый юнит из списка и присваиваем его максимальное здоровье
-            UnitData Unit = unitDatabase.units[id];
-            unitMaxHealth = Unit.maxHealth;
-            agent.speed = Unit.speedUnit;
-        }
 
-        else
-        {
-            Debug.LogWarning("UnitDatabase is not assigned or empty.");
-        }
+        // Получаем первый юнит из списка и присваиваем его максимальное здоровье
+        UnitData Unit = unitDatabase.units[id];
+        unitMaxHealth = Unit.maxHealth;
+        agent.speed = Unit.speedUnit;
+        
+
 
         unitHealth = unitMaxHealth;
         UpdateHealthUI();
