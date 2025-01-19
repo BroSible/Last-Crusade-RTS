@@ -39,14 +39,15 @@ public class BuildingDatabaseDisplay : MonoBehaviour
     private void InitializeDropdown()
     {
         List<string> idOptions = new List<string>();
-        foreach (var building in objectsDatabaseSO.objectsData)
+        
+        // Заполняем список доступных ID
+        foreach (var unit in objectsDatabaseSO.objectsData)
         {
-            idOptions.Add($"ID: {building.ID} - {building.Name}");
+            idOptions.Add(unit.ID.ToString());
         }
+
         idDropdown.ClearOptions();
         idDropdown.AddOptions(idOptions);
-        idDropdown.value = 0;
-        idDropdown.RefreshShownValue();
     }
 
     private void OnDropdownValueChanged(int index)
@@ -74,8 +75,6 @@ public class BuildingDatabaseDisplay : MonoBehaviour
                     string data = "<mspace=0.7em><b>| ID  | Name       | Description      | SizeX | SizeY | Cost |</b>\n";
                     data += "<b>|-----|------------|-----------------|-------|-------|------|</b>\n";
 
-                    objectsDatabaseSO.objectsData.Clear();
-
                     while (reader.Read())
                     {
                         string id = reader.IsDBNull(idIndex) ? "N/A" : reader.GetInt32(idIndex).ToString();
@@ -93,6 +92,7 @@ public class BuildingDatabaseDisplay : MonoBehaviour
             }
         }
     }
+
 
     private void SaveChanges()
     {
@@ -120,7 +120,7 @@ public class BuildingDatabaseDisplay : MonoBehaviour
 
         SaveToDatabase(building);
         LoadDataFromDatabase();
-        InitializeDropdown();
+        //InitializeDropdown();
         Debug.Log("Изменения успешно сохранены.");
     }
 

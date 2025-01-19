@@ -9039,13 +9039,14 @@ GameObject:
   - component: {fileID: 407910143}
   - component: {fileID: 407910145}
   - component: {fileID: 407910144}
+  - component: {fileID: 407910146}
   m_Layer: 5
   m_Name: BuildingPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &407910143
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9116,6 +9117,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 407910142}
   m_CullTransparentMesh: 1
+--- !u!114 &407910146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 407910142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 794ba2d2775b6fb459d9ed80fdcc3a3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectsDatabaseSO: {fileID: 11400000, guid: 2a9f8f39b476cf943bc7688007052eac, type: 2}
+  inspectorText: {fileID: 964913348}
+  saveButton: {fileID: 1244665014}
+  idDropdown: {fileID: 2058684733}
+  nameInput: {fileID: 71168747}
+  descriptionInput: {fileID: 1019497777}
+  sizeXInput: {fileID: 640897673}
+  sizeYInput: {fileID: 374422481}
+  costInput: {fileID: 1496235630}
 --- !u!1 &416416488
 GameObject:
   m_ObjectHideFlags: 0
@@ -11112,7 +11134,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 526924501}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eb60f03dccbdc8443ba546eda56eeede, type: 3}
   m_Name: 
@@ -11120,7 +11142,7 @@ MonoBehaviour:
   unitDatabaseSO: {fileID: 11400000, guid: 1c24382730c042b489f7928e1781b306, type: 2}
   inspectorText: {fileID: 964913348}
   saveButton: {fileID: 989555548}
-  idDropdown: {fileID: 848365206}
+  idDropdown: {fileID: 0}
   nameInput: {fileID: 1337823040}
   descriptionInput: {fileID: 1841101036}
   maxHealthInput: {fileID: 1905898428}
@@ -11148,7 +11170,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 526924501}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 794ba2d2775b6fb459d9ed80fdcc3a3b, type: 3}
   m_Name: 
@@ -11156,7 +11178,7 @@ MonoBehaviour:
   objectsDatabaseSO: {fileID: 11400000, guid: 2a9f8f39b476cf943bc7688007052eac, type: 2}
   inspectorText: {fileID: 964913348}
   saveButton: {fileID: 1244665014}
-  idDropdown: {fileID: 2058684733}
+  idDropdown: {fileID: 0}
   nameInput: {fileID: 71168747}
   descriptionInput: {fileID: 1019497777}
   sizeXInput: {fileID: 640897673}
@@ -33088,13 +33110,14 @@ GameObject:
   - component: {fileID: 1872763349}
   - component: {fileID: 1872763351}
   - component: {fileID: 1872763350}
+  - component: {fileID: 1872763352}
   m_Layer: 5
   m_Name: UnitPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1872763349
 RectTransform:
   m_ObjectHideFlags: 0
@@ -33167,6 +33190,29 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1872763348}
   m_CullTransparentMesh: 1
+--- !u!114 &1872763352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1872763348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb60f03dccbdc8443ba546eda56eeede, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unitDatabaseSO: {fileID: 11400000, guid: 1c24382730c042b489f7928e1781b306, type: 2}
+  inspectorText: {fileID: 964913348}
+  saveButton: {fileID: 989555548}
+  idDropdown: {fileID: 848365206}
+  nameInput: {fileID: 1337823040}
+  descriptionInput: {fileID: 1841101036}
+  maxHealthInput: {fileID: 1905898428}
+  unitDamageInput: {fileID: 446992378}
+  speedUnitInput: {fileID: 1417877483}
+  attackingDistanceInput: {fileID: 283134326}
+  stopAttackingDistanceInput: {fileID: 889763766}
 --- !u!1 &1878499848
 GameObject:
   m_ObjectHideFlags: 0
