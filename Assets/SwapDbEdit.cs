@@ -82,48 +82,24 @@ public class SwapDbEdit : MonoBehaviour
 
     private void LoadIdsToDropdown(string dbName, string tableName, TMP_Dropdown dropdown)
     {
-        try
+        List<string> ids = new List<string>();
+        using (var connection = new SqliteConnection(dbName))
         {
-            List<string> ids = new List<string>();
-            using (var connection = new SqliteConnection(dbName))
+            connection.Open();
+            using (var command = connection.CreateCommand())
             {
-                connection.Open();
-                using (var command = connection.CreateCommand())
+                command.CommandText = $"SELECT id FROM {tableName};";
+                using (var reader = command.ExecuteReader())
                 {
-                    // Корректный SQL-запрос для извлечения ID
-                    command.CommandText = $"SELECT id FROM {tableName} ORDER BY id ASC;";
-                    using (var reader = command.ExecuteReader())
+                    while (reader.Read())
                     {
-                        // Считываем все ID и добавляем их в список
-                        while (reader.Read())
-                        {
-                            if (!reader.IsDBNull(0))
-                            {
-                                ids.Add(reader.GetInt32(0).ToString());
-                            }
-                        }
+                        ids.Add(reader["id"].ToString());
                     }
                 }
             }
-
-            // Обновление выпадающего списка
-            dropdown.ClearOptions();
-            if (ids.Count > 0)
-            {
-                dropdown.AddOptions(ids);
-                dropdown.value = 0; // Устанавливаем первое значение
-            }
-            else
-            {
-                dropdown.AddOptions(new List<string> { "Нет данных" });
-            }
         }
-        catch (Exception ex)
-        {
-            Debug.LogError($"Ошибка при загрузке ID для таблицы {tableName}: {ex.Message}");
-            dropdown.ClearOptions();
-            dropdown.AddOptions(new List<string> { "Ошибка загрузки" });
-        }
+        dropdown.ClearOptions();
+        dropdown.AddOptions(ids);
     }
 
     private void LoadUnitData()

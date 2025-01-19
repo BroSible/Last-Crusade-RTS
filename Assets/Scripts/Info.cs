@@ -23,7 +23,9 @@ public class Info : MonoBehaviour
     // Метод для отображения фракций
     public void ShowFactions()
     {
-        if (!isDataLoaded)  // Проверка, загружены ли данные
+        ResetDataLoadedFlag();  // Сбрасываем флаг, чтобы подгрузить свежие данные
+
+        if (!isDataLoaded)
         {
             List<string> factionsInfo = LoadFactionsFromDatabase();
 
@@ -36,10 +38,10 @@ public class Info : MonoBehaviour
                 factionText.text = "Нет доступных данных о фракциях.";
             }
 
-            isDataLoaded = true;  // Устанавливаем флаг, чтобы не загружать данные повторно
+            isDataLoaded = true;
         }
 
-        factionPanel.SetActive(true);  // Включаем панель
+        factionPanel.SetActive(true);
     }
 
     // Метод для скрытия панели
@@ -47,6 +49,12 @@ public class Info : MonoBehaviour
     {
         factionPanel.SetActive(false);
     }
+
+    public void ResetDataLoadedFlag()
+    {
+        isDataLoaded = false;  // Сбрасываем флаг, чтобы при следующем запросе данные подгрузились снова
+    }
+
 
     public void HideAdminPanel()
     {
